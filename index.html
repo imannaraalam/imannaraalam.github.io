@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Iman Naraalam — Senior Test Automation Architect & Software Engineer. Designing intelligent systems that make software reliable, fast, and resilient at enterprise scale." />
+  <title>Iman Naraalam · Senior Test Automation Architect</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ====================================================
+       RESET & BASE
+    ==================================================== */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --black: #000000;
+      --white: #ffffff;
+      --gray-100: #f5f5f7;
+      --gray-300: #a1a1a6;
+      --gray-500: #6e6e73;
+      --gray-700: #3a3a3c;
+      --gray-800: #1d1d1f;
+      --gray-900: #111111;
+      --blue: #2997ff;
+      --blue-dim: rgba(41, 151, 255, 0.15);
+      --blue-glow: rgba(41, 151, 255, 0.08);
+      --cyan: #32d2fe;
+      --silver: #c0c8d8;
+      --border: rgba(255, 255, 255, 0.08);
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --transition: 0.6s var(--ease-premium);
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      background-color: var(--black);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-weight: 300;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ====================================================
+       FILM GRAIN OVERLAY
+    ==================================================== */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      pointer-events: none;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 256px 256px;
+    }
+
+    /* ====================================================
+       CURSOR GLOW
+    ==================================================== */
+    #cursor-glow {
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(41, 151, 255, 0.06) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 1;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s ease;
+      will-change: transform;
+    }
+
+    /* ====================================================
+       SCROLL PROGRESS BAR
+    ==================================================== */
+    #progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      width: 0%;
+      background: linear-gradient(90deg, var(--blue), var(--cyan), var(--silver));
+      z-index: 10000;
+      transition: width 0.1s linear;
+    }
+
+    /* ====================================================
+       NAVIGATION
+    ==================================================== */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 1.25rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: padding 0.4s var(--ease-out), background 0.4s ease, border-bottom 0.4s ease;
+    }
+
+    nav.scrolled {
+      padding: 0.875rem 2.5rem;
+      background: rgba(0, 0, 0, 0.72);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.125rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      text-decoration: none;
+      background: linear-gradient(135deg, var(--white) 0%, var(--silver) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      font-weight: 400;
+      color: var(--gray-300);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--blue);
+      transition: width 0.3s var(--ease-out);
+    }
+
+    .nav-links a:hover {
+      color: var(--white);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+    }
+
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 1.5px;
+      background: var(--white);
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .nav-hamburger.open span:nth-child(1) {
+      transform: translateY(6.5px) rotate(45deg);
+    }
+    .nav-hamburger.open span:nth-child(2) {
+      opacity: 0;
+    }
+    .nav-hamburger.open span:nth-child(3) {
+      transform: translateY(-6.5px) rotate(-45deg);
+    }
+
+    .nav-mobile {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: rgba(0, 0, 0, 0.96);
+      backdrop-filter: blur(20px);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+    }
+
+    .nav-mobile.open {
+      display: flex;
+    }
+
+    .nav-mobile a {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 500;
+      color: var(--white);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+      transition: color 0.3s ease;
+    }
+
+    .nav-mobile a:hover {
+      color: var(--blue);
+    }
+
+    /* ====================================================
+       SCROLL REVEAL (base state)
+    ==================================================== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s var(--ease-premium), transform 0.8s var(--ease-premium);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+    .reveal-delay-6 { transition-delay: 0.6s; }
+
+    /* ====================================================
+       HERO SECTION
+    ==================================================== */
+    #hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8rem 2.5rem 6rem;
+      overflow: hidden;
+    }
+
+    .hero-ambient {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(ellipse at center, rgba(41, 151, 255, 0.12) 0%, rgba(41, 151, 255, 0.04) 40%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+      border-radius: 50%;
+      filter: blur(40px);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1px solid var(--border);
+      border-radius: 2rem;
+      padding: 0.4rem 1rem;
+      font-size: 0.8125rem;
+      font-weight: 400;
+      color: var(--gray-300);
+      letter-spacing: 0.02em;
+      margin-bottom: 2.5rem;
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.04);
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s var(--ease-premium) 0.2s forwards;
+    }
+
+    .hero-badge .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #30d158;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .hero-badge .pulse-dot::before {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      background: rgba(48, 209, 88, 0.3);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.6); opacity: 0; }
+    }
+
+    .hero-headline {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 8vw, 6.5rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.03;
+      color: var(--white);
+      margin-bottom: 1.75rem;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp 1s var(--ease-premium) 0.4s forwards;
+    }
+
+    .hero-headline .gradient-text {
+      background: linear-gradient(135deg, var(--blue) 0%, var(--cyan) 50%, var(--silver) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-family: var(--font-body);
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      font-weight: 300;
+      color: var(--gray-300);
+      max-width: 640px;
+      margin: 0 auto 3rem;
+      line-height: 1.7;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp 1s var(--ease-premium) 0.6s forwards;
+    }
+
+    .hero-ctas {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp 1s var(--ease-premium) 0.8s forwards;
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ====================================================
+       BUTTONS
+    ==================================================== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-body);
+      font-size: 0.9375rem;
+      font-weight: 500;
+      text-decoration: none;
+      border-radius: 0.5rem;
+      padding: 0.875rem 1.75rem;
+      cursor: pointer;
+      transition: transform 0.3s var(--ease-premium), box-shadow 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+      letter-spacing: 0.005em;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: var(--blue);
+      color: var(--white);
+      border: 1px solid var(--blue);
+    }
+
+    .btn-primary:hover {
+      background: #1a88ff;
+      box-shadow: 0 8px 30px rgba(41, 151, 255, 0.35);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--white);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--gray-300);
+      border: 1px solid var(--border);
+    }
+
+    .btn-ghost:hover {
+      color: var(--white);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* ====================================================
+       SCROLL INDICATOR
+    ==================================================== */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--gray-500);
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeUp 1s var(--ease-premium) 1.2s forwards;
+      z-index: 2;
+    }
+
+    .scroll-indicator .arrow {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--gray-500), transparent);
+      animation: scrollArrow 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollArrow {
+      0%, 100% { transform: scaleY(1); opacity: 1; }
+      50% { transform: scaleY(0.6); opacity: 0.5; }
+    }
+
+    /* ====================================================
+       SECTION SHARED STYLES
+    ==================================================== */
+    section {
+      position: relative;
+    }
+
+    .section-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2.5rem;
+    }
+
+    .section-label {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 1.25rem;
+    }
+
+    /* ====================================================
+       MANIFESTO SECTION
+    ==================================================== */
+    #manifesto {
+      padding: 10rem 2.5rem;
+      border-top: 1px solid var(--border);
+      background: linear-gradient(180deg, var(--black) 0%, var(--gray-900) 100%);
+    }
+
+    .manifesto-text {
+      max-width: 900px;
+      margin: 0 auto;
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+      font-weight: 400;
+      line-height: 1.45;
+      color: var(--gray-300);
+      letter-spacing: -0.02em;
+    }
+
+    .manifesto-text strong {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    /* ====================================================
+       WHAT I BUILD — THREE PILLARS
+    ==================================================== */
+    #what-i-build {
+      padding: 10rem 2.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .pillars-header {
+      margin-bottom: 5rem;
+    }
+
+    .pillars-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: var(--white);
+      line-height: 1.1;
+    }
+
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: 1px solid var(--border);
+    }
+
+    .pillar {
+      padding: 3rem 2.5rem;
+      border-right: 1px solid var(--border);
+      transition: background 0.4s ease;
+      cursor: default;
+    }
+
+    .pillar:last-child {
+      border-right: none;
+    }
+
+    .pillar:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .pillar-icon {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .pillar-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      margin-bottom: 1rem;
+    }
+
+    .pillar-desc {
+      font-size: 0.9375rem;
+      font-weight: 300;
+      color: var(--gray-300);
+      line-height: 1.65;
+    }
+
+    /* ====================================================
+       IMPACT SECTION
+    ==================================================== */
+    #impact {
+      padding: 10rem 2.5rem;
+      border-top: 1px solid var(--border);
+      background: var(--gray-900);
+    }
+
+    .impact-header {
+      margin-bottom: 5rem;
+    }
+
+    .impact-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: var(--white);
+    }
+
+    .impact-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border: 1px solid var(--border);
+    }
+
+    .impact-card {
+      padding: 3rem 2.5rem;
+      border-right: 1px solid var(--border);
+      transition: background 0.4s ease;
+    }
+
+    .impact-card:last-child {
+      border-right: none;
+    }
+
+    .impact-card:hover {
+      background: rgba(41, 151, 255, 0.04);
+    }
+
+    .impact-number {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: block;
+      margin-bottom: 0.75rem;
+      line-height: 1;
+    }
+
+    .impact-desc {
+      font-size: 0.875rem;
+      font-weight: 300;
+      color: var(--gray-300);
+      line-height: 1.6;
+    }
+
+    /* ====================================================
+       TECH DNA SECTION
+    ==================================================== */
+    #tech-dna {
+      padding: 10rem 2.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .tech-header {
+      margin-bottom: 3.5rem;
+    }
+
+    .tech-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: var(--white);
+    }
+
+    .tech-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .tech-tag {
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      font-weight: 400;
+      color: var(--gray-300);
+      border: 1px solid var(--border);
+      border-radius: 2rem;
+      padding: 0.5rem 1.125rem;
+      letter-spacing: 0.01em;
+      transition: color 0.3s ease, border-color 0.3s ease, background 0.3s ease, transform 0.3s var(--ease-premium);
+      cursor: default;
+    }
+
+    .tech-tag:hover {
+      color: var(--white);
+      border-color: var(--blue);
+      background: var(--blue-dim);
+      transform: translateY(-2px);
+    }
+
+    /* ====================================================
+       CTA / CONTACT SECTION
+    ==================================================== */
+    #connect {
+      padding: 10rem 2.5rem;
+      border-top: 1px solid var(--border);
+      background: var(--gray-900);
+      text-align: center;
+    }
+
+    .connect-inner {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .connect-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.25rem, 5vw, 4rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: var(--white);
+      line-height: 1.08;
+      margin-bottom: 1.5rem;
+    }
+
+    .connect-subtitle {
+      font-size: 1.0625rem;
+      font-weight: 300;
+      color: var(--gray-300);
+      line-height: 1.7;
+      margin-bottom: 3rem;
+    }
+
+    .connect-ctas {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* ====================================================
+       FOOTER
+    ==================================================== */
+    footer {
+      padding: 2.5rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .footer-text {
+      font-size: 0.8125rem;
+      font-weight: 300;
+      color: var(--gray-500);
+      letter-spacing: 0.02em;
+    }
+
+    /* ====================================================
+       RESPONSIVE
+    ==================================================== */
+    @media (max-width: 968px) {
+      nav {
+        padding: 1rem 1.5rem;
+      }
+
+      nav.scrolled {
+        padding: 0.75rem 1.5rem;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .nav-hamburger {
+        display: flex;
+      }
+
+      #hero {
+        padding: 7rem 1.5rem 5rem;
+      }
+
+      #manifesto {
+        padding: 6rem 1.5rem;
+      }
+
+      #what-i-build {
+        padding: 6rem 1.5rem;
+      }
+
+      .pillars-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .pillar {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .pillar:last-child {
+        border-bottom: none;
+      }
+
+      #impact {
+        padding: 6rem 1.5rem;
+      }
+
+      .impact-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .impact-card:nth-child(2) {
+        border-right: none;
+      }
+
+      .impact-card:nth-child(3) {
+        border-top: 1px solid var(--border);
+      }
+
+      .impact-card:nth-child(4) {
+        border-right: none;
+        border-top: 1px solid var(--border);
+      }
+
+      #tech-dna {
+        padding: 6rem 1.5rem;
+      }
+
+      #connect {
+        padding: 6rem 1.5rem;
+      }
+
+      .section-inner {
+        padding: 0 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-ctas {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .impact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .impact-card {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .impact-card:last-child {
+        border-bottom: none;
+      }
+
+      .connect-ctas {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .manifesto-text {
+        font-size: 1.375rem;
+      }
+    }
+
+    /* ====================================================
+       UTILITY
+    ==================================================== */
+    ::selection {
+      background: rgba(41, 151, 255, 0.25);
+      color: var(--white);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Scroll Progress Bar -->
+  <div id="progress-bar" role="progressbar" aria-label="Page scroll progress"></div>
+
+  <!-- Cursor Glow -->
+  <div id="cursor-glow" aria-hidden="true"></div>
+
+  <!-- ================================================
+       NAVIGATION
+  ================================================ -->
+  <nav id="main-nav" role="navigation" aria-label="Main navigation">
+    <a href="#hero" class="nav-logo" aria-label="Iman Naraalam — home">iman.dev</a>
+
+    <ul class="nav-links" role="list">
+      <li><a href="#what-i-build">Expertise</a></li>
+      <li><a href="#impact">Impact</a></li>
+      <li><a href="#tech-dna">Stack</a></li>
+      <li><a href="#connect">Connect</a></li>
+    </ul>
+
+    <button class="nav-hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-nav">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile Nav Overlay -->
+  <nav id="mobile-nav" class="nav-mobile" aria-label="Mobile navigation" aria-hidden="true">
+    <a href="#what-i-build" class="mobile-link">Expertise</a>
+    <a href="#impact" class="mobile-link">Impact</a>
+    <a href="#tech-dna" class="mobile-link">Stack</a>
+    <a href="#connect" class="mobile-link">Connect</a>
+  </nav>
+
+  <!-- ================================================
+       HERO
+  ================================================ -->
+  <section id="hero" aria-labelledby="hero-headline">
+    <div class="hero-ambient" aria-hidden="true"></div>
+
+    <div class="hero-content">
+      <div class="hero-badge" role="status" aria-live="polite">
+        <span class="pulse-dot" aria-hidden="true"></span>
+        Open to strategic opportunities
+      </div>
+
+      <h1 class="hero-headline" id="hero-headline">
+        Engineering<br />
+        <span class="gradient-text">Quality at Scale</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Senior Test Automation Architect &amp; Software Engineer.
+        I design intelligent systems that make software reliable, fast, and resilient — at enterprise scale.
+      </p>
+
+      <div class="hero-ctas">
+        <a href="#connect" class="btn btn-primary" aria-label="Connect with Iman Naraalam">Let's connect</a>
+        <a href="#what-i-build" class="btn btn-secondary" aria-label="Explore Iman's work">Explore my work</a>
+      </div>
+    </div>
+
+    <div class="scroll-indicator" aria-hidden="true">
+      <div class="arrow"></div>
+    </div>
+  </section>
+
+  <!-- ================================================
+       MANIFESTO
+  ================================================ -->
+  <section id="manifesto" aria-label="Professional manifesto">
+    <div class="section-inner">
+      <p class="manifesto-text reveal">
+        I don't just write tests. I <strong>architect the systems</strong> that make testing invisible, intelligent, and inevitable. Where others see manual processes, I see <strong>distributed automation pipelines</strong>. Where others see bugs, I see <strong>architectural signals</strong>.
+      </p>
+    </div>
+  </section>
+
+  <!-- ================================================
+       WHAT I BUILD — THREE PILLARS
+  ================================================ -->
+  <section id="what-i-build" aria-labelledby="pillars-title">
+    <div class="section-inner">
+      <div class="pillars-header">
+        <p class="section-label reveal">What I Build</p>
+        <h2 class="pillars-title reveal reveal-delay-1" id="pillars-title">Three pillars.<br />One mission.</h2>
+      </div>
+
+      <div class="pillars-grid" role="list">
+        <article class="pillar reveal reveal-delay-2" role="listitem">
+          <span class="pillar-icon" aria-hidden="true">⚙️</span>
+          <h3 class="pillar-title">Automation Architecture</h3>
+          <p class="pillar-desc">Designing scalable test frameworks and CI/CD-native automation platforms that transform quality from a bottleneck into a competitive advantage.</p>
+        </article>
+
+        <article class="pillar reveal reveal-delay-3" role="listitem">
+          <span class="pillar-icon" aria-hidden="true">🧠</span>
+          <h3 class="pillar-title">AI-Augmented Testing</h3>
+          <p class="pillar-desc">Applying computer vision and machine learning to build self-healing tests, visual regression systems, and intelligent defect prediction engines.</p>
+        </article>
+
+        <article class="pillar reveal reveal-delay-4" role="listitem">
+          <span class="pillar-icon" aria-hidden="true">🏗️</span>
+          <h3 class="pillar-title">Distributed Systems</h3>
+          <p class="pillar-desc">Engineering resilient, observable software across microservices and cloud-native ecosystems — where reliability is the feature.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================
+       IMPACT
+  ================================================ -->
+  <section id="impact" aria-labelledby="impact-title">
+    <div class="section-inner">
+      <div class="impact-header">
+        <p class="section-label reveal">Impact</p>
+        <h2 class="impact-title reveal reveal-delay-1" id="impact-title">Numbers tell stories.</h2>
+      </div>
+
+      <div class="impact-grid" role="list">
+        <article class="impact-card reveal reveal-delay-2" role="listitem">
+          <span class="impact-number" data-target="90" data-suffix="%">0%</span>
+          <p class="impact-desc">Reduction in manual regression effort through end-to-end automation platforms</p>
+        </article>
+
+        <article class="impact-card reveal reveal-delay-3" role="listitem">
+          <span class="impact-number" data-target="10" data-suffix="x">0x</span>
+          <p class="impact-desc">Faster feedback loops by embedding quality directly into CI/CD pipelines</p>
+        </article>
+
+        <article class="impact-card reveal reveal-delay-4" role="listitem">
+          <span class="impact-number" data-target="50" data-suffix="+">0+</span>
+          <p class="impact-desc">Microservices monitored through custom-built observability and testing infrastructure</p>
+        </article>
+
+        <article class="impact-card reveal reveal-delay-5" role="listitem">
+          <span class="impact-number" data-target="3" data-suffix="">0</span>
+          <p class="impact-desc">AI-driven testing tools designed and shipped from prototype to production</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================
+       TECH DNA
+  ================================================ -->
+  <section id="tech-dna" aria-labelledby="tech-title">
+    <div class="section-inner">
+      <div class="tech-header">
+        <p class="section-label reveal">Tech DNA</p>
+        <h2 class="tech-title reveal reveal-delay-1" id="tech-title">The stack behind the systems.</h2>
+      </div>
+
+      <div class="tech-tags reveal reveal-delay-2" role="list" aria-label="Technology stack">
+        <span class="tech-tag" role="listitem">Java</span>
+        <span class="tech-tag" role="listitem">Python</span>
+        <span class="tech-tag" role="listitem">Selenium</span>
+        <span class="tech-tag" role="listitem">Playwright</span>
+        <span class="tech-tag" role="listitem">Appium</span>
+        <span class="tech-tag" role="listitem">REST Assured</span>
+        <span class="tech-tag" role="listitem">Docker</span>
+        <span class="tech-tag" role="listitem">Kubernetes</span>
+        <span class="tech-tag" role="listitem">Jenkins</span>
+        <span class="tech-tag" role="listitem">GitHub Actions</span>
+        <span class="tech-tag" role="listitem">AWS</span>
+        <span class="tech-tag" role="listitem">GCP</span>
+        <span class="tech-tag" role="listitem">TensorFlow</span>
+        <span class="tech-tag" role="listitem">OpenCV</span>
+        <span class="tech-tag" role="listitem">Grafana</span>
+        <span class="tech-tag" role="listitem">Prometheus</span>
+        <span class="tech-tag" role="listitem">Kafka</span>
+        <span class="tech-tag" role="listitem">Spring Boot</span>
+        <span class="tech-tag" role="listitem">TestNG</span>
+        <span class="tech-tag" role="listitem">Cypress</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================
+       CONNECT / CTA
+  ================================================ -->
+  <section id="connect" aria-labelledby="connect-title">
+    <div class="connect-inner">
+      <p class="section-label reveal">Connect</p>
+      <h2 class="connect-title reveal reveal-delay-1" id="connect-title">Let's build something remarkable.</h2>
+      <p class="connect-subtitle reveal reveal-delay-2">
+        The full story of my journey lives on LinkedIn. Here, let's start a conversation.
+      </p>
+
+      <div class="connect-ctas reveal reveal-delay-3">
+        <a
+          href="https://www.linkedin.com/in/imannaraalam/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-primary"
+          aria-label="View Iman Naraalam's LinkedIn profile (opens in new tab)"
+        >
+          LinkedIn
+        </a>
+        <a
+          href="mailto:your.email@example.com"
+          class="btn btn-secondary"
+          aria-label="Send Iman Naraalam an email"
+        >
+          Email
+        </a>
+        <a
+          href="https://github.com/imannaraalam"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-ghost"
+          aria-label="View Iman Naraalam's GitHub profile (opens in new tab)"
+        >
+          GitHub
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================
+       FOOTER
+  ================================================ -->
+  <footer role="contentinfo">
+    <p class="footer-text">© 2026 Iman Naraalam · Designed with precision · Built with intent</p>
+  </footer>
+
+  <!-- ================================================
+       JAVASCRIPT
+  ================================================ -->
+  <script>
+    'use strict';
+
+    // ── Scroll progress bar ──────────────────────────────────
+    const progressBar = document.getElementById('progress-bar');
+    function updateProgress() {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      progressBar.style.width = progress + '%';
+    }
+
+    // ── Nav glassmorphism on scroll ──────────────────────────
+    const mainNav = document.getElementById('main-nav');
+    function updateNav() {
+      mainNav.classList.toggle('scrolled', window.scrollY > 40);
+    }
+
+    // ── Cursor glow ──────────────────────────────────────────
+    const cursorGlow = document.getElementById('cursor-glow');
+    let cursorX = -1000, cursorY = -1000;
+    let glowX = -1000, glowY = -1000;
+    let rafId = null;
+
+    function animateCursor() {
+      glowX += (cursorX - glowX) * 0.08;
+      glowY += (cursorY - glowY) * 0.08;
+      cursorGlow.style.left = glowX + 'px';
+      cursorGlow.style.top = glowY + 'px';
+      rafId = requestAnimationFrame(animateCursor);
+    }
+
+    if (window.matchMedia('(pointer: fine)').matches) {
+      document.addEventListener('mousemove', function(e) {
+        cursorX = e.clientX;
+        cursorY = e.clientY;
+      });
+      animateCursor();
+    } else {
+      cursorGlow.style.display = 'none';
+    }
+
+    // ── Parallax hero ────────────────────────────────────────
+    const heroContent = document.querySelector('.hero-content');
+    const heroAmbient = document.querySelector('.hero-ambient');
+
+    function updateParallax() {
+      const scrollY = window.scrollY;
+      const heroHeight = document.getElementById('hero').offsetHeight;
+      if (scrollY < heroHeight) {
+        const ratio = scrollY / heroHeight;
+        if (heroContent) {
+          heroContent.style.transform = 'translateY(' + (scrollY * 0.25) + 'px)';
+          heroContent.style.opacity = String(1 - ratio * 1.4);
+        }
+        if (heroAmbient) {
+          heroAmbient.style.transform = 'translate(-50%, calc(-50% + ' + (scrollY * 0.15) + 'px))';
+        }
+      }
+    }
+
+    // ── Combined scroll handler ──────────────────────────────
+    function onScroll() {
+      updateProgress();
+      updateNav();
+      updateParallax();
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll(); // initial call
+
+    // ── Scroll reveal (Intersection Observer) ────────────────
+    const revealEls = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver(
+      function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+    );
+
+    revealEls.forEach(function(el) {
+      revealObserver.observe(el);
+    });
+
+    // ── Counter animation ────────────────────────────────────
+    function easeOutCubic(t) {
+      return 1 - Math.pow(1 - t, 3);
+    }
+
+    function animateCounter(el) {
+      const target = parseInt(el.getAttribute('data-target'), 10);
+      const suffix = el.getAttribute('data-suffix') || '';
+      const duration = 1800;
+      const startTime = performance.now();
+
+      function step(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const value = Math.round(easeOutCubic(progress) * target);
+        el.textContent = value + suffix;
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        }
+      }
+
+      requestAnimationFrame(step);
+    }
+
+    const counterEls = document.querySelectorAll('.impact-number[data-target]');
+    const counterObserver = new IntersectionObserver(
+      function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            animateCounter(entry.target);
+            counterObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    counterEls.forEach(function(el) {
+      counterObserver.observe(el);
+    });
+
+    // ── Mobile hamburger menu ────────────────────────────────
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobile-nav');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+
+    function closeMobileNav() {
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+      mobileNav.classList.remove('open');
+      mobileNav.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    function openMobileNav() {
+      hamburger.classList.add('open');
+      hamburger.setAttribute('aria-expanded', 'true');
+      mobileNav.classList.add('open');
+      mobileNav.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    hamburger.addEventListener('click', function() {
+      if (hamburger.classList.contains('open')) {
+        closeMobileNav();
+      } else {
+        openMobileNav();
+      }
+    });
+
+    mobileLinks.forEach(function(link) {
+      link.addEventListener('click', closeMobileNav);
+    });
+
+    // Close mobile nav on Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && hamburger.classList.contains('open')) {
+        closeMobileNav();
+      }
+    });
+  </script>
+</body>
+</html>
