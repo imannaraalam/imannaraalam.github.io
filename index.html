@@ -500,7 +500,6 @@
     ==================================================== */
     #manifesto {
       padding: 10rem 2.5rem;
-      border-top: 1px solid var(--border);
       background: linear-gradient(180deg, var(--black) 0%, var(--gray-900) 100%);
     }
 
@@ -525,7 +524,6 @@
     ==================================================== */
     #what-i-build {
       padding: 10rem 2.5rem;
-      border-top: 1px solid var(--border);
     }
 
     .pillars-header {
@@ -550,8 +548,9 @@
     .pillar {
       padding: 3rem 2.5rem;
       border-right: 1px solid var(--border);
-      transition: background 0.4s ease;
+      transition: background 0.4s ease, box-shadow 0.4s ease;
       cursor: default;
+      position: relative;
     }
 
     .pillar:last-child {
@@ -589,7 +588,6 @@
     ==================================================== */
     #impact {
       padding: 10rem 2.5rem;
-      border-top: 1px solid var(--border);
       background: var(--gray-900);
     }
 
@@ -651,7 +649,6 @@
     ==================================================== */
     #tech-dna {
       padding: 10rem 2.5rem;
-      border-top: 1px solid var(--border);
     }
 
     .tech-header {
@@ -697,7 +694,6 @@
     ==================================================== */
     #connect {
       padding: 10rem 2.5rem;
-      border-top: 1px solid var(--border);
       background: var(--gray-900);
       text-align: center;
     }
@@ -869,6 +865,268 @@
       background: rgba(41, 151, 255, 0.25);
       color: var(--white);
     }
+
+    /* ====================================================
+       EFFECT 1 — HERO CANVAS NETWORK
+    ==================================================== */
+    #hero-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+      mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+    }
+
+    /* ====================================================
+       EFFECT 2 — CODE RAIN CANVAS (MANIFESTO)
+    ==================================================== */
+    #manifesto {
+      position: relative;
+    }
+    #code-rain-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+    #manifesto .section-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ====================================================
+       EFFECT 3 — MANIFESTO WORD REVEAL
+    ==================================================== */
+    .manifesto-word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.4s var(--ease-premium), transform 0.4s var(--ease-premium);
+    }
+    .manifesto-word.word-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .manifesto-word.word-strong-flash {
+      animation: strongGlow 0.5s var(--ease-premium) forwards;
+    }
+    @keyframes strongGlow {
+      0%   { text-shadow: 0 0 0px rgba(41,151,255,0); }
+      40%  { text-shadow: 0 0 18px rgba(41,151,255,0.75), 0 0 40px rgba(41,151,255,0.35); }
+      100% { text-shadow: 0 0 0px rgba(41,151,255,0); }
+    }
+
+    /* ====================================================
+       EFFECT 4 — PILLAR SCAN LINE + ICON PULSE
+    ==================================================== */
+    .pillar {
+      overflow: hidden;
+    }
+    .pillar::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: -2px;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(41,151,255,0.55) 50%, transparent 100%);
+      animation: scanLine 4s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes scanLine {
+      0%   { top: -2px; opacity: 0; }
+      5%   { opacity: 1; }
+      95%  { opacity: 1; }
+      100% { top: 100%; opacity: 0; }
+    }
+    .pillar:hover::after {
+      animation-duration: 1.2s;
+    }
+    .pillar:hover {
+      box-shadow: 0 0 30px rgba(41,151,255,0.08), inset 0 0 30px rgba(41,151,255,0.03);
+    }
+    .pillar-icon {
+      animation: iconPulseGlow 3s ease-in-out infinite;
+      display: inline-block;
+    }
+    @keyframes iconPulseGlow {
+      0%, 100% { filter: drop-shadow(0 0 0px rgba(41,151,255,0)); }
+      50%      { filter: drop-shadow(0 0 8px rgba(41,151,255,0.7)); }
+    }
+
+    /* ====================================================
+       EFFECT 5 — IMPACT NUMBER GLOW ON LOCK-IN
+    ==================================================== */
+    .impact-number.locked {
+      animation: numberLock 0.5s var(--ease-premium) forwards;
+    }
+    @keyframes numberLock {
+      0%   { text-shadow: none; }
+      30%  { text-shadow: 0 0 20px rgba(41,151,255,0.8), 0 0 50px rgba(50,210,254,0.4); }
+      100% { text-shadow: none; }
+    }
+
+    /* ====================================================
+       EFFECT 6 — TECH TAGS FLOATING BOB
+    ==================================================== */
+    @keyframes tagFloat {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-5px); }
+    }
+    .tech-tag {
+      animation: tagFloat 3s ease-in-out infinite;
+    }
+    .tech-tag:hover {
+      animation-play-state: paused;
+      transform: scale(1.05) translateY(-2px);
+    }
+    .tech-tag:nth-child(1)  { animation-delay: 0s;     animation-duration: 2.8s; }
+    .tech-tag:nth-child(2)  { animation-delay: 0.3s;   animation-duration: 3.1s; }
+    .tech-tag:nth-child(3)  { animation-delay: 0.6s;   animation-duration: 2.6s; }
+    .tech-tag:nth-child(4)  { animation-delay: 0.9s;   animation-duration: 3.4s; }
+    .tech-tag:nth-child(5)  { animation-delay: 1.2s;   animation-duration: 2.9s; }
+    .tech-tag:nth-child(6)  { animation-delay: 0.45s;  animation-duration: 3.2s; }
+    .tech-tag:nth-child(7)  { animation-delay: 0.75s;  animation-duration: 2.7s; }
+    .tech-tag:nth-child(8)  { animation-delay: 1.05s;  animation-duration: 3.5s; }
+    .tech-tag:nth-child(9)  { animation-delay: 0.15s;  animation-duration: 3.0s; }
+    .tech-tag:nth-child(10) { animation-delay: 0.55s;  animation-duration: 2.85s; }
+    .tech-tag:nth-child(11) { animation-delay: 0.85s;  animation-duration: 3.15s; }
+    .tech-tag:nth-child(12) { animation-delay: 1.15s;  animation-duration: 2.65s; }
+    .tech-tag:nth-child(13) { animation-delay: 0.35s;  animation-duration: 3.3s; }
+    .tech-tag:nth-child(14) { animation-delay: 0.65s;  animation-duration: 2.95s; }
+    .tech-tag:nth-child(15) { animation-delay: 0.95s;  animation-duration: 3.45s; }
+    .tech-tag:nth-child(16) { animation-delay: 0.25s;  animation-duration: 2.75s; }
+    .tech-tag:nth-child(17) { animation-delay: 0.5s;   animation-duration: 3.05s; }
+    .tech-tag:nth-child(18) { animation-delay: 0.8s;   animation-duration: 2.55s; }
+    .tech-tag:nth-child(19) { animation-delay: 1.1s;   animation-duration: 3.25s; }
+    .tech-tag:nth-child(20) { animation-delay: 0.4s;   animation-duration: 2.9s; }
+
+    /* ====================================================
+       EFFECT 7 — CTA RADAR RINGS
+    ==================================================== */
+    #connect {
+      position: relative;
+      overflow: hidden;
+    }
+    .radar-rings {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 0;
+      pointer-events: none;
+    }
+    .radar-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(41,151,255,0.25);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      opacity: 0;
+      animation: radarPing 3s ease-out infinite;
+    }
+    .radar-ring:nth-child(1) { width: 300px; height: 300px; animation-delay: 0s; }
+    .radar-ring:nth-child(2) { width: 550px; height: 550px; animation-delay: 1s; }
+    .radar-ring:nth-child(3) { width: 800px; height: 800px; animation-delay: 2s; }
+    @keyframes radarPing {
+      0%   { transform: translate(-50%, -50%) scale(0.1); opacity: 0.5; }
+      100% { transform: translate(-50%, -50%) scale(1);   opacity: 0; }
+    }
+    #connect .connect-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ====================================================
+       EFFECT 8 — ANIMATED DIVIDER LINES
+    ==================================================== */
+    .animated-divider {
+      position: relative;
+      height: 1px;
+      background: var(--border);
+      overflow: visible;
+      pointer-events: none;
+    }
+    .animated-divider::after {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -10px;
+      width: 10px;
+      height: 5px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(41,151,255,0.9) 0%, rgba(41,151,255,0.3) 60%, transparent 100%);
+      animation: dotTravel 8s linear infinite;
+      box-shadow: 0 0 6px rgba(41,151,255,0.7);
+    }
+    @keyframes dotTravel {
+      0%   { left: -10px; opacity: 0; }
+      3%   { opacity: 1; }
+      97%  { opacity: 1; }
+      100% { left: 100%; opacity: 0; }
+    }
+
+    /* ====================================================
+       EFFECT 9 — BINARY DATA STREAMS (GLOBAL)
+    ==================================================== */
+    #data-streams {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .data-stream {
+      position: absolute;
+      top: -100%;
+      font-family: var(--font-body);
+      font-size: 0.65rem;
+      color: var(--blue);
+      opacity: 0.025;
+      line-height: 1.4;
+      white-space: pre;
+      animation: streamFall linear infinite;
+      letter-spacing: 0.05em;
+    }
+    @keyframes streamFall {
+      from { transform: translateY(0); }
+      to   { transform: translateY(200vh); }
+    }
+
+    /* ====================================================
+       EFFECT 10 — SECTION PARALLAX DEPTH
+    ==================================================== */
+    .section-parallax {
+      will-change: transform;
+    }
+
+    /* ====================================================
+       REDUCED-MOTION OVERRIDES
+    ==================================================== */
+    @media (prefers-reduced-motion: reduce) {
+      .manifesto-word { transition: none; }
+      .pillar::after  { animation: none; }
+      .pillar-icon    { animation: none; }
+      .tech-tag       { animation: none; }
+      .radar-ring     { animation: none; }
+      .animated-divider::after { animation: none; }
+      .data-stream    { animation: none; }
+    }
+
+    /* ====================================================
+       MOBILE — DISABLE HEAVY EFFECTS
+    ==================================================== */
+    @media (max-width: 968px) {
+      #hero-canvas,
+      #code-rain-canvas,
+      #data-streams { display: none; }
+    }
   </style>
 </head>
 <body>
@@ -878,6 +1136,15 @@
 
   <!-- Cursor Glow -->
   <div id="cursor-glow" aria-hidden="true"></div>
+
+  <!-- Effect 9: Global binary data streams -->
+  <div id="data-streams" aria-hidden="true">
+    <div class="data-stream" style="left:8%;animation-duration:22s;animation-delay:-4s;">0<br>1<br>0<br>0<br>1<br>1<br>0<br>1<br>0<br>1<br>1<br>0<br>0<br>1<br>0<br>1<br>0<br>0<br>1<br>1<br>0<br>1<br>0<br>0<br>1<br>1<br>0</div>
+    <div class="data-stream" style="left:24%;animation-duration:28s;animation-delay:-11s;">1<br>0<br>1<br>1<br>0<br>0<br>1<br>0<br>1<br>0<br>0<br>1<br>1<br>0<br>1<br>0<br>1<br>1<br>0<br>0<br>1<br>0<br>1<br>1<br>0<br>1<br>0</div>
+    <div class="data-stream" style="left:51%;animation-duration:19s;animation-delay:-7s;">0<br>0<br>1<br>0<br>1<br>1<br>0<br>0<br>1<br>1<br>0<br>1<br>0<br>0<br>1<br>0<br>1<br>0<br>1<br>1<br>0<br>0<br>1<br>0<br>1<br>0<br>1</div>
+    <div class="data-stream" style="left:73%;animation-duration:25s;animation-delay:-2s;">1<br>1<br>0<br>1<br>0<br>0<br>1<br>1<br>0<br>0<br>1<br>0<br>1<br>1<br>0<br>1<br>0<br>0<br>1<br>0<br>1<br>1<br>0<br>1<br>1<br>0<br>0</div>
+    <div class="data-stream" style="left:90%;animation-duration:31s;animation-delay:-16s;">0<br>1<br>1<br>0<br>0<br>1<br>0<br>1<br>1<br>0<br>1<br>0<br>0<br>1<br>1<br>0<br>0<br>1<br>0<br>1<br>0<br>1<br>1<br>0<br>0<br>1<br>0</div>
+  </div>
 
   <!-- ================================================
        NAVIGATION
@@ -911,6 +1178,7 @@
        HERO
   ================================================ -->
   <section id="hero" aria-labelledby="hero-headline">
+    <canvas id="hero-canvas" aria-hidden="true"></canvas>
     <div class="hero-ambient" aria-hidden="true"></div>
 
     <div class="hero-content">
@@ -940,16 +1208,23 @@
     </div>
   </section>
 
+  <!-- Effect 8: Animated divider -->
+  <div class="animated-divider" aria-hidden="true"></div>
+
   <!-- ================================================
        MANIFESTO
   ================================================ -->
   <section id="manifesto" aria-label="Professional manifesto">
+    <canvas id="code-rain-canvas" aria-hidden="true"></canvas>
     <div class="section-inner">
-      <p class="manifesto-text reveal">
+      <p class="manifesto-text" id="manifesto-text" aria-live="polite">
         I don't just write tests. I <strong>architect the systems</strong> that make testing invisible, intelligent, and inevitable. Where others see manual processes, I see <strong>distributed automation pipelines</strong>. Where others see bugs, I see <strong>architectural signals</strong>.
       </p>
     </div>
   </section>
+
+  <!-- Effect 8: Animated divider -->
+  <div class="animated-divider" aria-hidden="true"></div>
 
   <!-- ================================================
        WHAT I BUILD — THREE PILLARS
@@ -982,6 +1257,9 @@
       </div>
     </div>
   </section>
+
+  <!-- Effect 8: Animated divider -->
+  <div class="animated-divider" aria-hidden="true"></div>
 
   <!-- ================================================
        IMPACT
@@ -1016,6 +1294,9 @@
       </div>
     </div>
   </section>
+
+  <!-- Effect 8: Animated divider -->
+  <div class="animated-divider" aria-hidden="true"></div>
 
   <!-- ================================================
        TECH DNA
@@ -1052,10 +1333,19 @@
     </div>
   </section>
 
+  <!-- Effect 8: Animated divider -->
+  <div class="animated-divider" aria-hidden="true"></div>
+
   <!-- ================================================
        CONNECT / CTA
   ================================================ -->
   <section id="connect" aria-labelledby="connect-title">
+    <!-- Effect 7: Radar rings -->
+    <div class="radar-rings" aria-hidden="true">
+      <div class="radar-ring"></div>
+      <div class="radar-ring"></div>
+      <div class="radar-ring"></div>
+    </div>
     <div class="connect-inner">
       <p class="section-label reveal">Connect</p>
       <h2 class="connect-title reveal reveal-delay-1" id="connect-title">Let's build something remarkable.</h2>
@@ -1106,6 +1396,8 @@
   <script>
     'use strict';
 
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     // ── Scroll progress bar ──────────────────────────────────
     const progressBar = document.getElementById('progress-bar');
     function updateProgress() {
@@ -1125,14 +1417,13 @@
     const cursorGlow = document.getElementById('cursor-glow');
     let cursorX = -1000, cursorY = -1000;
     let glowX = -1000, glowY = -1000;
-    let rafId = null;
 
     function animateCursor() {
       glowX += (cursorX - glowX) * 0.08;
       glowY += (cursorY - glowY) * 0.08;
       cursorGlow.style.left = glowX + 'px';
       cursorGlow.style.top = glowY + 'px';
-      rafId = requestAnimationFrame(animateCursor);
+      requestAnimationFrame(animateCursor);
     }
 
     if (window.matchMedia('(pointer: fine)').matches) {
@@ -1172,7 +1463,7 @@
     }
 
     window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll(); // initial call
+    onScroll();
 
     // ── Scroll reveal (Intersection Observer) ────────────────
     const revealEls = document.querySelectorAll('.reveal');
@@ -1187,12 +1478,9 @@
       },
       { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
     );
+    revealEls.forEach(function(el) { revealObserver.observe(el); });
 
-    revealEls.forEach(function(el) {
-      revealObserver.observe(el);
-    });
-
-    // ── Counter animation ────────────────────────────────────
+    // ── Effect 5: Counter animation with glitch lock-in ──────
     function easeOutCubic(t) {
       return 1 - Math.pow(1 - t, 3);
     }
@@ -1210,6 +1498,23 @@
         el.textContent = value + suffix;
         if (progress < 1) {
           requestAnimationFrame(step);
+        } else {
+          // Glitch lock-in effect: rapidly alternate near-values for 200ms
+          if (!reducedMotion) {
+            let glitchCount = 0;
+            const glitchInterval = setInterval(function() {
+              const offset = Math.round((Math.random() - 0.5) * 3);
+              const glitchVal = Math.min(target, Math.max(0, target + offset));
+              el.textContent = glitchVal + suffix;
+              glitchCount++;
+              if (glitchCount >= 6) {
+                clearInterval(glitchInterval);
+                el.textContent = target + suffix;
+                el.classList.add('locked');
+                setTimeout(function() { el.classList.remove('locked'); }, 600);
+              }
+            }, 33);
+          }
         }
       }
 
@@ -1228,10 +1533,244 @@
       },
       { threshold: 0.5 }
     );
+    counterEls.forEach(function(el) { counterObserver.observe(el); });
 
-    counterEls.forEach(function(el) {
-      counterObserver.observe(el);
-    });
+    // ── Effect 3: Manifesto word-by-word reveal ───────────────
+    (function() {
+      const manifesto = document.getElementById('manifesto-text');
+      if (!manifesto) return;
+
+      // Tokenise preserving <strong> wrapping
+      const rawHTML = manifesto.innerHTML;
+      // Split into strong-wrapped chunks and plain text chunks
+      const parts = [];
+      const strongRe = /<strong>([\s\S]*?)<\/strong>/g;
+      let lastIdx = 0;
+      let match;
+      while ((match = strongRe.exec(rawHTML)) !== null) {
+        if (match.index > lastIdx) {
+          parts.push({ text: rawHTML.slice(lastIdx, match.index), strong: false });
+        }
+        parts.push({ text: match[1], strong: true });
+        lastIdx = match.index + match[0].length;
+      }
+      if (lastIdx < rawHTML.length) {
+        parts.push({ text: rawHTML.slice(lastIdx), strong: false });
+      }
+
+      // Build word spans
+      let newHTML = '';
+      parts.forEach(function(part) {
+        const words = part.text.split(/(\s+)/);
+        words.forEach(function(token) {
+          if (/^\s+$/.test(token)) {
+            newHTML += token;
+          } else if (token.length > 0) {
+            const cls = part.strong
+              ? 'manifesto-word manifesto-strong'
+              : 'manifesto-word';
+            const inner = part.strong ? '<strong>' + token + '</strong>' : token;
+            newHTML += '<span class="' + cls + '">' + inner + '</span>';
+          }
+        });
+      });
+      manifesto.innerHTML = newHTML;
+
+      const wordSpans = manifesto.querySelectorAll('.manifesto-word');
+
+      const wordObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            wordObserver.unobserve(entry.target);
+            wordSpans.forEach(function(span, i) {
+              const delay = reducedMotion ? 0 : i * 40;
+              setTimeout(function() {
+                span.classList.add('word-visible');
+                if (span.classList.contains('manifesto-strong') && !reducedMotion) {
+                  setTimeout(function() {
+                    span.classList.add('word-strong-flash');
+                  }, 200);
+                }
+              }, delay);
+            });
+          }
+        });
+      }, { threshold: 0.2 });
+
+      wordObserver.observe(manifesto);
+    })();
+
+    // ── Effect 1: Hero Canvas Network ────────────────────────
+    (function() {
+      if (reducedMotion || window.innerWidth <= 968) return;
+
+      const canvas = document.getElementById('hero-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      const COLORS = ['rgba(41,151,255,', 'rgba(50,210,254,', 'rgba(192,200,216,'];
+      const NODE_COUNT = 60;
+      const CONNECT_DIST = 140;
+      const MOUSE_ATTRACT_DIST = 180;
+      const MOUSE_ATTRACT_FORCE = 0.012;
+
+      let mouseX = -9999, mouseY = -9999;
+      let nodes = [];
+      let animId;
+
+      function resize() {
+        const hero = document.getElementById('hero');
+        canvas.width = hero.offsetWidth;
+        canvas.height = hero.offsetHeight;
+      }
+
+      function mkNode() {
+        return {
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 0.4,
+          vy: (Math.random() - 0.5) * 0.4,
+          r: 1.5 + Math.random() * 1.5,
+          color: COLORS[Math.floor(Math.random() * COLORS.length)],
+          opacity: 0.2 + Math.random() * 0.5
+        };
+      }
+
+      function init() {
+        resize();
+        nodes = [];
+        for (let i = 0; i < NODE_COUNT; i++) nodes.push(mkNode());
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Attract nodes near mouse
+        nodes.forEach(function(n) {
+          const dx = mouseX - n.x;
+          const dy = mouseY - n.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < MOUSE_ATTRACT_DIST && dist > 0) {
+            n.vx += (dx / dist) * MOUSE_ATTRACT_FORCE;
+            n.vy += (dy / dist) * MOUSE_ATTRACT_FORCE;
+          }
+          // Dampen velocity
+          n.vx *= 0.99;
+          n.vy *= 0.99;
+          n.x += n.vx;
+          n.y += n.vy;
+          // Bounce off edges
+          if (n.x < n.r || n.x > canvas.width - n.r)  { n.vx *= -1; n.x = Math.max(n.r, Math.min(canvas.width - n.r, n.x)); }
+          if (n.y < n.r || n.y > canvas.height - n.r) { n.vy *= -1; n.y = Math.max(n.r, Math.min(canvas.height - n.r, n.y)); }
+        });
+
+        // Draw connections
+        for (let i = 0; i < nodes.length; i++) {
+          for (let j = i + 1; j < nodes.length; j++) {
+            const dx = nodes[i].x - nodes[j].x;
+            const dy = nodes[i].y - nodes[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < CONNECT_DIST) {
+              const alpha = (1 - dist / CONNECT_DIST) * 0.18;
+              ctx.beginPath();
+              ctx.strokeStyle = 'rgba(41,151,255,' + alpha + ')';
+              ctx.lineWidth = 0.5;
+              ctx.moveTo(nodes[i].x, nodes[i].y);
+              ctx.lineTo(nodes[j].x, nodes[j].y);
+              ctx.stroke();
+            }
+          }
+        }
+
+        // Draw nodes
+        nodes.forEach(function(n) {
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+          ctx.fillStyle = n.color + n.opacity + ')';
+          ctx.fill();
+        });
+
+        animId = requestAnimationFrame(draw);
+      }
+
+      let canvasRect = canvas.getBoundingClientRect();
+
+      document.addEventListener('mousemove', function(e) {
+        mouseX = e.clientX - canvasRect.left;
+        mouseY = e.clientY - canvasRect.top;
+      });
+
+      window.addEventListener('resize', function() {
+        cancelAnimationFrame(animId);
+        init();
+        canvasRect = canvas.getBoundingClientRect();
+        draw();
+      });
+
+      init();
+      draw();
+    })();
+
+    // ── Effect 2: Code Rain Canvas (Manifesto) ────────────────
+    (function() {
+      if (reducedMotion || window.innerWidth <= 968) return;
+
+      const canvas = document.getElementById('code-rain-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const chars = [...new Set('{}[]<>/=;:()|0_1.=>->&&!?*#@'.split(''))];
+      const fontSize = 14;
+      let columns, drops;
+      let animId;
+
+      function init() {
+        const section = document.getElementById('manifesto');
+        canvas.width = section.offsetWidth;
+        canvas.height = section.offsetHeight;
+        columns = Math.floor(canvas.width / fontSize);
+        drops = [];
+        for (let i = 0; i < columns; i++) {
+          drops[i] = Math.random() * -50;
+        }
+      }
+
+      function draw() {
+        ctx.fillStyle = 'rgba(0,0,0,0.04)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = 'rgba(41,151,255,0.06)';
+        ctx.font = fontSize + 'px monospace';
+
+        for (let i = 0; i < drops.length; i++) {
+          const char = chars[Math.floor(Math.random() * chars.length)];
+          ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+          if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
+          drops[i] += 0.4;
+        }
+        animId = requestAnimationFrame(draw);
+      }
+
+      const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            if (!animId) draw();
+          } else {
+            cancelAnimationFrame(animId);
+            animId = null;
+          }
+        });
+      }, { threshold: 0 });
+
+      window.addEventListener('resize', function() {
+        cancelAnimationFrame(animId);
+        animId = null;
+        init();
+      });
+
+      init();
+      observer.observe(document.getElementById('manifesto'));
+    })();
 
     // ── Mobile hamburger menu ────────────────────────────────
     const hamburger = document.getElementById('hamburger');
@@ -1266,7 +1805,6 @@
       link.addEventListener('click', closeMobileNav);
     });
 
-    // Close mobile nav on Escape key
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape' && hamburger.classList.contains('open')) {
         closeMobileNav();
