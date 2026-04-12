@@ -596,6 +596,10 @@
       display: block;
     }
 
+    .pillar-icon svg {
+      color: var(--blue);
+    }
+
     .pillar-title {
       font-family: var(--font-display);
       font-size: 1.25rem;
@@ -709,6 +713,20 @@
       letter-spacing: 0.01em;
       transition: color 0.3s ease, border-color 0.3s ease, background 0.3s ease, transform 0.3s var(--ease-premium);
       cursor: default;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .tech-tag img {
+      width: 20px;
+      height: 20px;
+      filter: grayscale(100%) brightness(1.8);
+      transition: filter 0.3s ease;
+    }
+
+    .tech-tag:hover img {
+      filter: grayscale(0%) brightness(1);
     }
 
     .tech-tag:hover {
@@ -1182,8 +1200,8 @@
     <a href="#hero" class="nav-logo" aria-label="Ishar Pasquale Mannara Alam — home">iman.dev</a>
 
     <ul class="nav-links" role="list">
-      <li><a href="#what-i-build">Expertise</a></li>
       <li><a href="#impact">Impact</a></li>
+      <li><a href="#what-i-build">Expertise</a></li>
       <li><a href="#tech-dna">Stack</a></li>
       <li><a href="#connect">Connect</a></li>
     </ul>
@@ -1197,8 +1215,8 @@
 
   <!-- Mobile Nav Overlay -->
   <nav id="mobile-nav" class="nav-mobile" aria-label="Mobile navigation" aria-hidden="true">
-    <a href="#what-i-build" class="mobile-link">Expertise</a>
     <a href="#impact" class="mobile-link">Impact</a>
+    <a href="#what-i-build" class="mobile-link">Expertise</a>
     <a href="#tech-dna" class="mobile-link">Stack</a>
     <a href="#connect" class="mobile-link">Connect</a>
   </nav>
@@ -1217,12 +1235,12 @@
       </div>
 
       <h1 class="hero-headline" id="hero-headline">
-        Engineering<br />
-        <span class="gradient-text">Quality at Scale</span>
+        I Build What<br />
+        <span class="gradient-text">Doesn't Exist Yet</span>
       </h1>
 
       <p class="hero-subtitle">
-        Senior Test Automation Architect &amp; Software Engineer with 7+ years of experience. I design custom, intelligent automation systems — from computer vision to robotic arms — that make software reliable at enterprise scale.
+        When standard tools satisfice, I engineer the solution. 7+ years designing custom automation systems from scratch — computer vision, robotic arms, satellite monitoring — quality without compromise.
       </p>
 
       <div class="hero-ctas">
@@ -1233,56 +1251,6 @@
 
     <div class="scroll-indicator" aria-hidden="true">
       <div class="arrow"></div>
-    </div>
-  </section>
-
-  <!-- Effect 8: Animated divider -->
-  <div class="animated-divider" aria-hidden="true"></div>
-
-  <!-- ================================================
-       MANIFESTO
-  ================================================ -->
-  <section id="manifesto" aria-label="Professional manifesto">
-    <canvas id="code-rain-canvas" aria-hidden="true"></canvas>
-    <div class="section-inner">
-      <p class="manifesto-text" id="manifesto-text" aria-live="polite">
-        I don't just write tests. I <strong>architect custom solutions</strong> from scratch — robotic arms, computer vision pipelines, IoT sensor networks, and distributed orchestrators. Where others see manual processes, I see <strong>automation opportunities</strong>. Where others see limits, I see <strong>R&amp;D challenges</strong>.
-      </p>
-    </div>
-  </section>
-
-  <!-- Effect 8: Animated divider -->
-  <div class="animated-divider" aria-hidden="true"></div>
-
-  <!-- ================================================
-       WHAT I BUILD — THREE PILLARS
-  ================================================ -->
-  <section id="what-i-build" aria-labelledby="pillars-title">
-    <div class="section-inner">
-      <div class="pillars-header">
-        <p class="section-label reveal">What I Build</p>
-        <h2 class="pillars-title reveal reveal-delay-1" id="pillars-title">Three pillars.<br />One mission.</h2>
-      </div>
-
-      <div class="pillars-grid" role="list">
-        <article class="pillar reveal reveal-delay-2" role="listitem">
-          <span class="pillar-icon" aria-hidden="true">⚙️</span>
-          <h3 class="pillar-title">Automation Architecture</h3>
-          <p class="pillar-desc">Designing scalable, client-agnostic test frameworks and distributed orchestration platforms — from mobile apps to enterprise desk phones, STBs, and IoT devices.</p>
-        </article>
-
-        <article class="pillar reveal reveal-delay-3" role="listitem">
-          <span class="pillar-icon" aria-hidden="true">🧠</span>
-          <h3 class="pillar-title">AI &amp; Computer Vision</h3>
-          <p class="pillar-desc">Building custom solutions with OpenCV, Tesseract OCR, and ML — from video anomaly detection (buffering, freezes) to ArUco-based robotic arm control for physical device validation.</p>
-        </article>
-
-        <article class="pillar reveal reveal-delay-4" role="listitem">
-          <span class="pillar-icon" aria-hidden="true">🏗️</span>
-          <h3 class="pillar-title">R&amp;D &amp; Custom Engineering</h3>
-          <p class="pillar-desc">Conceiving hardware-software hybrid systems: battery monitoring boxes, IR remote simulators, audio capture/inject tools, LoRaWAN satellite monitoring, and DRM bypass via external cameras.</p>
-        </article>
-      </div>
     </div>
   </section>
 
@@ -1306,7 +1274,7 @@
         </article>
 
         <article class="impact-card reveal reveal-delay-3" role="listitem">
-          <span class="impact-number" data-target="1.5" data-suffix="M€+">0M€+</span>
+          <span class="impact-number" data-target="1500" data-suffix="K€+">0K€+</span>
           <p class="impact-desc">Revenue generated through custom automation solutions, framework development, and client acquisitions</p>
         </article>
 
@@ -1327,6 +1295,56 @@
   <div class="animated-divider" aria-hidden="true"></div>
 
   <!-- ================================================
+       WHAT I BUILD — THREE PILLARS
+  ================================================ -->
+  <section id="what-i-build" aria-labelledby="pillars-title">
+    <div class="section-inner">
+      <div class="pillars-header">
+        <p class="section-label reveal">What I Build</p>
+        <h2 class="pillars-title reveal reveal-delay-1" id="pillars-title">Three pillars.<br />One mission.</h2>
+      </div>
+
+      <div class="pillars-grid" role="list">
+        <article class="pillar reveal reveal-delay-2" role="listitem">
+          <span class="pillar-icon" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+          </span>
+          <h3 class="pillar-title">Automation Architecture</h3>
+          <p class="pillar-desc">Designing scalable, client-agnostic test frameworks and distributed orchestration platforms — from mobile apps to enterprise desk phones, STBs, and IoT devices.</p>
+        </article>
+
+        <article class="pillar reveal reveal-delay-3" role="listitem">
+          <span class="pillar-icon" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+              <rect x="9" y="9" width="6" height="6"></rect>
+              <path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"></path>
+            </svg>
+          </span>
+          <h3 class="pillar-title">AI &amp; Computer Vision</h3>
+          <p class="pillar-desc">Building custom solutions with OpenCV, Tesseract OCR, and ML — from video anomaly detection (buffering, freezes) to ArUco-based robotic arm control for physical device validation.</p>
+        </article>
+
+        <article class="pillar reveal reveal-delay-4" role="listitem">
+          <span class="pillar-icon" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+            </svg>
+          </span>
+          <h3 class="pillar-title">R&amp;D &amp; Custom Engineering</h3>
+          <p class="pillar-desc">Conceiving hardware-software hybrid systems: battery monitoring boxes, IR remote simulators, audio capture/inject tools, LoRaWAN satellite monitoring, and DRM bypass via external cameras.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Effect 8: Animated divider -->
+  <div class="animated-divider" aria-hidden="true"></div>
+
+  <!-- ================================================
        TECH DNA
   ================================================ -->
   <section id="tech-dna" aria-labelledby="tech-title">
@@ -1337,43 +1355,41 @@
       </div>
 
       <div class="tech-tags reveal reveal-delay-2" role="list" aria-label="Technology stack">
-        <span class="tech-tag" role="listitem">Java</span>
-        <span class="tech-tag" role="listitem">Python</span>
-        <span class="tech-tag" role="listitem">C++</span>
-        <span class="tech-tag" role="listitem">JavaScript</span>
-        <span class="tech-tag" role="listitem">Selenium</span>
+        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" alt="Java logo" loading="lazy" />Java</span>
+        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="Python logo" loading="lazy" />Python</span>
+        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" alt="C++ logo" loading="lazy" />C++</span>
+        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/selenium/selenium-original.svg" alt="Selenium logo" loading="lazy" />Selenium</span>
+        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/opencv/opencv-original.svg" alt="OpenCV logo" loading="lazy" />OpenCV</span>
+        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pytorch/pytorch-original.svg" alt="PyTorch logo" loading="lazy" />PyTorch</span>
+        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cucumber/cucumber-plain.svg" alt="Cucumber logo" loading="lazy" />Cucumber</span>
+        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/arduino/arduino-original.svg" alt="Arduino logo" loading="lazy" />Arduino</span>
+        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/raspberrypi/raspberrypi-original.svg" alt="Raspberry Pi logo" loading="lazy" />Raspberry Pi</span>
+        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jenkins/jenkins-original.svg" alt="Jenkins logo" loading="lazy" />Jenkins</span>
+        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" alt="Docker logo" loading="lazy" />Docker</span>
+        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg" alt="AWS logo" loading="lazy" />AWS</span>
+        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/apachekafka/apachekafka-original.svg" alt="Kafka logo" loading="lazy" />Kafka</span>
+        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/spring/spring-original.svg" alt="Spring logo" loading="lazy" />Spring Boot</span>
         <span class="tech-tag" role="listitem">Appium</span>
         <span class="tech-tag" role="listitem">WebDriverIO</span>
-        <span class="tech-tag" role="listitem">Playwright</span>
-        <span class="tech-tag" role="listitem">OpenCV</span>
         <span class="tech-tag" role="listitem">Tesseract OCR</span>
-        <span class="tech-tag" role="listitem">PyTorch</span>
-        <span class="tech-tag" role="listitem">Cucumber</span>
-        <span class="tech-tag" role="listitem">Behave</span>
-        <span class="tech-tag" role="listitem">Robot Framework</span>
-        <span class="tech-tag" role="listitem">Spring Boot</span>
-        <span class="tech-tag" role="listitem">Hibernate</span>
-        <span class="tech-tag" role="listitem">Flask</span>
-        <span class="tech-tag" role="listitem">Android SDK</span>
-        <span class="tech-tag" role="listitem">Swift</span>
-        <span class="tech-tag" role="listitem">Arduino</span>
         <span class="tech-tag" role="listitem">ESP32</span>
-        <span class="tech-tag" role="listitem">Raspberry Pi</span>
-        <span class="tech-tag" role="listitem">Jenkins</span>
-        <span class="tech-tag" role="listitem">Git</span>
-        <span class="tech-tag" role="listitem">AWS</span>
-        <span class="tech-tag" role="listitem">Kafka</span>
-        <span class="tech-tag" role="listitem">Airflow</span>
-        <span class="tech-tag" role="listitem">Docker</span>
-        <span class="tech-tag" role="listitem">MongoDB</span>
-        <span class="tech-tag" role="listitem">MySQL</span>
-        <span class="tech-tag" role="listitem">PostgreSQL</span>
-        <span class="tech-tag" role="listitem">SQLite</span>
-        <span class="tech-tag" role="listitem">Datadog</span>
-        <span class="tech-tag" role="listitem">Allure</span>
         <span class="tech-tag" role="listitem">Wireshark</span>
-        <span class="tech-tag" role="listitem">Postman</span>
       </div>
+    </div>
+  </section>
+
+  <!-- Effect 8: Animated divider -->
+  <div class="animated-divider" aria-hidden="true"></div>
+
+  <!-- ================================================
+       MANIFESTO
+  ================================================ -->
+  <section id="manifesto" aria-label="Professional manifesto">
+    <canvas id="code-rain-canvas" aria-hidden="true"></canvas>
+    <div class="section-inner">
+      <p class="manifesto-text" id="manifesto-text" aria-live="polite">
+        I don't just write tests. I <strong>architect custom solutions</strong> from scratch — robotic arms, computer vision pipelines, IoT sensor networks, and distributed orchestrators. Where others see manual processes, I see <strong>automation opportunities</strong>. Where others see limits, I see <strong>R&amp;D challenges</strong>.
+      </p>
     </div>
   </section>
 
