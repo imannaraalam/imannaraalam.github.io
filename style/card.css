@@ -1,0 +1,102 @@
+.card-wrapper {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-card);
+  perspective: 900px;
+  perspective-origin: 50% 45%;
+  transform: scale(var(--wrapper-scale, 1));
+}
+
+.card {
+  width: var(--card-width);
+  height: var(--card-height);
+  min-width: var(--card-min-width);
+  position: relative;
+  transform-style: preserve-3d;
+  cursor: grab;
+  will-change: transform;
+  user-select: none;
+  touch-action: pan-y;
+  --spec-x: 50%;
+  --spec-y: 50%;
+  --spec-opacity: 0;
+}
+
+.card.dragging,
+.card:active {
+  cursor: grabbing;
+}
+
+.card-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+}
+
+.card-front {
+  border-radius: var(--radius-front);
+}
+
+.card-back {
+  border-radius: var(--radius-back);
+  transform: rotateY(180deg);
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  left: 0;
+  width: 8px;
+  background: linear-gradient(to bottom, #1a1a2e, #0d0d14);
+  transform: rotateY(-90deg) translateZ(4px);
+  transform-origin: left center;
+  backface-visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.card.show-thickness::before {
+  opacity: 1;
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at var(--spec-x) var(--spec-y), rgba(255, 255, 255, 0.15), transparent 60%);
+  opacity: var(--spec-opacity);
+  pointer-events: none;
+  transition: opacity 0.3s;
+  z-index: 5;
+}
+
+.card.show-thickness-back::after {
+  box-shadow: inset -6px 0 0 0 rgba(232, 213, 184, 0.9);
+}
+
+@media (max-width: 900px) {
+  .card {
+    width: 360px;
+    height: 227px;
+  }
+}
+
+@media (max-width: 600px) {
+  .card {
+    width: 300px;
+    height: 189px;
+  }
+
+  .card-wrapper {
+    perspective: 600px;
+  }
+}
+

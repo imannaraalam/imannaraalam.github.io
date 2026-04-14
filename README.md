@@ -1,55 +1,52 @@
-# Ishar Pasquale Mannara Alam
+# Duality Card
 
-> **Senior Test Automation Architect & Software Engineer**  
-> Personal portfolio & digital business card — live at [imannaraalam.github.io](https://imannaraalam.github.io)
+Esperienza portfolio interattiva "The Engineer / The Human" sviluppata in HTML/CSS/JS vanilla.
 
-[![GitHub Pages](https://img.shields.io/badge/Hosted%20on-GitHub%20Pages-0d1117?style=flat&logo=github&logoColor=white)](https://imannaraalam.github.io)
-[![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)](index.html)
-[![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white)](index.html)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+## Screenshot
 
----
+Placeholder: aggiungi qui una cattura schermata del fronte e retro card.
 
-## ✨ About
+## Feature
 
-This repository hosts my personal portfolio — a minimal, fast, single-page business card built with plain HTML & CSS. No frameworks, no build tools, no dependencies.
+- Card 3D dual-face con flip sincronizzato mondo notte/alba.
+- Living world a layer: gradient, particelle generative, vignetta, grain canvas.
+- 16 interazioni (hint, flip edge, magnetic hover, easter egg, confetti, shake, long press).
+- Audio synthesis opt-in con Web Audio API e persistenza `localStorage`.
+- Progressive enhancement per mobile, keyboard e preferenze accessibilita'.
 
-Designed to communicate who I am, what I build, and how to reach me — in under 3 seconds.
+## Browser support
 
-## 🛠️ Tech Stack
+- Chrome 90+ (desktop/mobile)
+- Edge 90+
+- Firefox 90+
+- Safari 15+ (desktop/iOS)
 
-| Layer | Technology |
-|---|---|
-| Markup | HTML5 |
-| Styling | CSS3 (custom properties, grid, animations) |
-| Fonts | Space Grotesk · Inter via Google Fonts |
-| Hosting | GitHub Pages |
-| Effects | Canvas API (hero network + code rain) |
+## Sviluppo locale
 
-## 📁 Project Structure
+Avvio rapido con server statico:
 
-```
-imannaraalam.github.io/
-├── index.html        ← single-page portfolio
-├── robots.txt        ← crawler directives
-├── sitemap.xml       ← sitemap for search engines
-├── LICENSE           ← MIT License
-└── README.md
+```bash
+npx serve .
 ```
 
-## 🚀 Live Site
+In alternativa puoi aprire direttamente `index.html` nel browser.
 
-🔗 **[https://imannaraalam.github.io](https://imannaraalam.github.io)**
+## Configurazione QR e logo
 
-## 📦 Deployment
+- Sostituisci `assets/qr-github.svg` con il QR reale del profilo GitHub.
+- Sostituisci `assets/qr-personal.svg` con il QR del messaggio personale.
+- Sostituisci `assets/logo.svg` con il logo definitivo mantenendo `viewBox` coerente.
 
-This site deploys automatically via **GitHub Pages** from the `main` branch root.  
-No build step required — push to `main` and the site is live.
+## Audio
 
-## 📬 Contact
+- Al primo click viene mostrato il consenso audio.
+- Toggle rapido audio da tastiera: tasto `A`.
 
-Reach out via the links on the site.
+## Limitazioni note
 
----
+- Nessun uso di WebGL: rendering 3D tramite CSS transforms.
+- `OffscreenCanvas` opzionale: fallback automatico su canvas tradizionale.
 
-*Designed & developed by [@imannaraalam](https://github.com/imannaraalam)*
+## Licenza
+
+MIT — vedi `LICENSE`.

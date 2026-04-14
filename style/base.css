@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Playfair+Display:ital,wght@0,700;1,400;1,700&family=Lora:wght@400;600;700&display=swap');
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --night-bg: #02020a;
+  --night-gradient-from: #0a0a1a;
+  --night-gradient-to: #02020a;
+  --night-tint: #1a3aff;
+  --night-card-bg: #0d0d14;
+  --night-text: #e8eaf0;
+  --night-accent: #2979ff;
+  --night-accent2: #00e5ff;
+  --night-meta: #4a5568;
+  --night-weave1: #141420;
+  --night-weave2: #0f0f1a;
+
+  --dawn-bg: #f5ede0;
+  --dawn-gradient-from: #f0dfc0;
+  --dawn-gradient-to: #faf6f0;
+  --dawn-tint: #d4862a;
+  --dawn-card-bg: #faf6f0;
+  --dawn-text: #2c2416;
+  --dawn-accent: #c4622d;
+  --dawn-accent2: #5a7a52;
+  --dawn-detail: #8b7355;
+  --dawn-texture: #f0e8d8;
+
+  --flip-duration: 2s;
+  --flip-easing: cubic-bezier(0.4, 0, 0.2, 1);
+  --float-amplitude: 10px;
+  --float-period: 3.2s;
+  --tilt-lerp: 0.08;
+  --tilt-max-x: 18deg;
+  --tilt-max-y: 22deg;
+
+  --z-gradient: 0;
+  --z-particles: 1;
+  --z-vignette: 2;
+  --z-grain: 3;
+  --z-card: 4;
+  --z-ui: 10;
+
+  /* desktop: >900px, tablet: 600-900px, mobile: <600px */
+
+  --radius-front: 6px;
+  --radius-back: 8px;
+
+  --card-width: 420px;
+  --card-height: 265px;
+  --card-min-width: 300px;
+
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  --font-display: 'Playfair Display', 'Georgia', serif;
+  --font-body: 'Lora', 'Cambria', serif;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow: hidden;
+  margin: 0;
+  height: 100vh;
+  background: var(--night-bg);
+  color: var(--night-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font: inherit;
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--night-accent);
+  outline-offset: 4px;
+}
+
+.scene.is-dawn .card:focus-visible {
+  outline-color: var(--dawn-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .card * {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .led {
+    animation: none !important;
+  }
+
+  .world-particles,
+  .world-grain {
+    display: none;
+  }
+
+  .front-logo,
+  .glitching,
+  .shaking,
+  .pixel-mode,
+  .confetti {
+    animation: none !important;
+  }
+
+  .card::after {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .world-grain,
+  .world-vignette,
+  .card-front::before,
+  .card-back::before {
+    display: none !important;
+  }
+}
+

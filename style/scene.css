@@ -1,0 +1,65 @@
+.scene {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  cursor: crosshair;
+}
+
+.world-layer {
+  position: absolute;
+  inset: 0;
+}
+
+.world-gradient {
+  z-index: var(--z-gradient);
+  background: radial-gradient(ellipse at 50% 35%, var(--night-gradient-from), var(--night-gradient-to));
+  transition: background var(--flip-duration) var(--flip-easing);
+}
+
+.scene.is-dawn .world-gradient {
+  background: linear-gradient(to top, var(--dawn-gradient-from), var(--dawn-gradient-to));
+}
+
+.world-gradient::after {
+  content: '';
+  position: absolute;
+  width: 45vmin;
+  height: 45vmin;
+  left: var(--halo-x, 50%);
+  top: var(--halo-y, 50%);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  pointer-events: none;
+  transition: background 300ms ease;
+  background: radial-gradient(circle, rgba(26, 58, 255, 0.04), transparent 70%);
+}
+
+.scene.is-dawn .world-gradient::after {
+  background: radial-gradient(circle, rgba(212, 134, 42, 0.06), transparent 70%);
+}
+
+.world-particles {
+  z-index: var(--z-particles);
+}
+
+.world-vignette {
+  z-index: var(--z-vignette);
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.4) 100%);
+}
+
+.world-grain {
+  z-index: var(--z-grain);
+  pointer-events: none;
+  opacity: 0.03;
+}
+
+.scene.is-dawn .world-grain {
+  opacity: 0.02;
+}
+
+.scene.is-dawn .world-vignette {
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.15) 100%);
+}
+

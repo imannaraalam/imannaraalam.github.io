@@ -1,0 +1,184 @@
+.card-back {
+  background-color: var(--dawn-card-bg);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3CfeDisplacementMap scale='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+  border: 1px solid rgba(180, 120, 60, 0.25);
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  color: var(--dawn-text);
+}
+.card-back::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 240, 220, 0.1));
+  border-radius: var(--radius-back);
+  pointer-events: none;
+  z-index: 1;
+}
+.card-back > * {
+  position: relative;
+  z-index: 2;
+}
+.back-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.back-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--dawn-accent);
+}
+.back-bio h3 {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-variant: small-caps;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--dawn-detail);
+  margin: 6px 0 4px;
+}
+.back-bio p {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 0.75rem;
+  color: var(--dawn-text);
+  line-height: 1.5;
+}
+.back-timeline {
+  list-style: none;
+  padding: 0 0 0 16px;
+  margin: 8px 0;
+  position: relative;
+  border-left: 1px solid var(--dawn-detail);
+}
+.back-timeline li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 0;
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  color: var(--dawn-text);
+  position: relative;
+  cursor: default;
+}
+.tl-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--dawn-accent);
+  position: absolute;
+  left: -19px;
+}
+.tl-year {
+  font-weight: 600;
+  color: var(--dawn-detail);
+  min-width: 32px;
+}
+.back-timeline li::after {
+  content: attr(data-detail);
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--dawn-text);
+  color: var(--dawn-card-bg);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.6rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+.back-timeline li:hover::after {
+  opacity: 1;
+}
+.back-hobbies {
+  display: flex;
+  gap: 12px;
+  margin: 8px 0;
+}
+.hobby {
+  font-size: 1.2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s;
+  padding: 4px;
+  position: relative;
+}
+.hobby:hover {
+  transform: scale(1.3);
+}
+.back-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: auto;
+}
+.back-qr {
+  width: 60px;
+  height: 60px;
+}
+.back-location {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: var(--dawn-detail);
+}
+.back-stamp {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.5rem;
+  color: #c0392b;
+  border: 2px solid #c0392b;
+  padding: 2px 6px;
+  transform: rotate(12deg) skewX(-5deg);
+  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+.back-coffee {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139, 115, 85, 0.3), rgba(139, 115, 85, 0.1) 70%, transparent);
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+.back-coffee.expanding {
+  transform: scale(1.8);
+}
+.card-back {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--dawn-detail) transparent;
+}
+.card-back::-webkit-scrollbar {
+  width: 3px;
+}
+.card-back::-webkit-scrollbar-thumb {
+  background: var(--dawn-detail);
+}
+.card-back > .back-hidden {
+  opacity: 0;
+  transform: translateY(8px);
+}
+.card-back > .back-reveal {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+}
