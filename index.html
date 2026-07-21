@@ -116,6 +116,57 @@
       will-change: transform;
     }
 
+    body.cursor-active,
+    body.cursor-active * {
+      cursor: none;
+    }
+
+    #custom-cursor {
+      position: fixed;
+      left: -100px;
+      top: -100px;
+      width: 8px;
+      height: 8px;
+      border: 1px solid transparent;
+      border-radius: 50%;
+      background: rgba(50, 210, 254, 0.96);
+      box-shadow: 0 0 8px rgba(50, 210, 254, 0.72), 0 0 18px rgba(41, 151, 255, 0.34);
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      transition: width 0.22s var(--ease-premium),
+                  height 0.22s var(--ease-premium),
+                  background 0.22s ease,
+                  border-color 0.22s ease,
+                  box-shadow 0.22s ease,
+                  opacity 0.18s ease;
+      z-index: 10001;
+    }
+
+    #custom-cursor.visible {
+      opacity: 1;
+    }
+
+    #custom-cursor.hovering {
+      width: 30px;
+      height: 30px;
+      border-color: rgba(50, 210, 254, 0.72);
+      background: rgba(50, 210, 254, 0.08);
+      box-shadow: 0 0 18px rgba(50, 210, 254, 0.36), 0 0 34px rgba(41, 151, 255, 0.24);
+    }
+
+    #custom-cursor.hovering::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.92);
+      transform: translate(-50%, -50%);
+    }
+
     /* ====================================================
        SCROLL PROGRESS BAR
     ==================================================== */
@@ -616,6 +667,11 @@
       line-height: 1.65;
     }
 
+    .pillar-desc strong {
+      color: var(--white);
+      font-weight: 500;
+    }
+
     /* ====================================================
        IMPACT SECTION
     ==================================================== */
@@ -718,15 +774,47 @@
       gap: 0.5rem;
     }
 
-    .tech-tag img {
+    .tech-tag img,
+    .tech-icon {
       width: 20px;
       height: 20px;
+      flex-shrink: 0;
+    }
+
+    .tech-tag img {
       filter: grayscale(100%) brightness(1.8);
       transition: filter 0.3s ease;
     }
 
+    .tech-tag img.tech-logo-mono {
+      filter: invert(1) brightness(1.55);
+      opacity: 0.86;
+    }
+
+    .tech-icon {
+      color: var(--silver);
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      opacity: 0.9;
+      transition: color 0.3s ease, opacity 0.3s ease, filter 0.3s ease;
+    }
+
     .tech-tag:hover img {
       filter: grayscale(0%) brightness(1);
+    }
+
+    .tech-tag:hover img.tech-logo-mono {
+      filter: invert(1) brightness(2);
+      opacity: 1;
+    }
+
+    .tech-tag:hover .tech-icon {
+      color: var(--blue);
+      opacity: 1;
+      filter: drop-shadow(0 0 6px rgba(41, 151, 255, 0.5));
     }
 
     .tech-tag:hover {
@@ -1052,6 +1140,24 @@
     .tech-tag:nth-child(18) { animation-delay: 0.8s;   animation-duration: 2.55s; }
     .tech-tag:nth-child(19) { animation-delay: 1.1s;   animation-duration: 3.25s; }
     .tech-tag:nth-child(20) { animation-delay: 0.4s;   animation-duration: 2.9s; }
+    .tech-tag:nth-child(21) { animation-delay: 0.7s;   animation-duration: 3.2s; }
+    .tech-tag:nth-child(22) { animation-delay: 1.0s;   animation-duration: 2.8s; }
+    .tech-tag:nth-child(23) { animation-delay: 0.2s;   animation-duration: 3.4s; }
+    .tech-tag:nth-child(24) { animation-delay: 0.6s;   animation-duration: 2.7s; }
+    .tech-tag:nth-child(25) { animation-delay: 0.9s;   animation-duration: 3.1s; }
+    .tech-tag:nth-child(26) { animation-delay: 1.2s;   animation-duration: 2.85s; }
+    .tech-tag:nth-child(27) { animation-delay: 0.35s;  animation-duration: 3.3s; }
+    .tech-tag:nth-child(28) { animation-delay: 0.75s;  animation-duration: 2.75s; }
+    .tech-tag:nth-child(29) { animation-delay: 1.05s;  animation-duration: 3.45s; }
+    .tech-tag:nth-child(30) { animation-delay: 0.15s;  animation-duration: 2.95s; }
+    .tech-tag:nth-child(31) { animation-delay: 0.55s;  animation-duration: 3.15s; }
+    .tech-tag:nth-child(32) { animation-delay: 0.85s;  animation-duration: 2.65s; }
+    .tech-tag:nth-child(33) { animation-delay: 1.15s;  animation-duration: 3.35s; }
+    .tech-tag:nth-child(34) { animation-delay: 0.45s;  animation-duration: 2.85s; }
+    .tech-tag:nth-child(35) { animation-delay: 0.8s;   animation-duration: 3.25s; }
+    .tech-tag:nth-child(36) { animation-delay: 0.1s;   animation-duration: 2.7s; }
+    .tech-tag:nth-child(37) { animation-delay: 0.5s;   animation-duration: 3.05s; }
+    .tech-tag:nth-child(38) { animation-delay: 0.95s;  animation-duration: 2.9s; }
 
     /* ====================================================
        EFFECT 7 — CTA RADAR RINGS
@@ -1183,6 +1289,61 @@
 
   <!-- Cursor Glow -->
   <div id="cursor-glow" aria-hidden="true"></div>
+  <div id="custom-cursor" aria-hidden="true"></div>
+
+  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;overflow:hidden">
+    <symbol id="icon-mobile" viewBox="0 0 24 24">
+      <rect x="7" y="2.5" width="10" height="19" rx="2"></rect>
+      <path d="M11 18h2"></path>
+    </symbol>
+    <symbol id="icon-api" viewBox="0 0 24 24">
+      <path d="m7 8-4 4 4 4"></path>
+      <path d="m17 8 4 4-4 4"></path>
+      <path d="m14 4-4 16"></path>
+    </symbol>
+    <symbol id="icon-brain" viewBox="0 0 24 24">
+      <path d="M9.5 3A3 3 0 0 0 7 7.7 3.3 3.3 0 0 0 5 13a3.4 3.4 0 0 0 2.8 5.6A3 3 0 0 0 12 21V3Z"></path>
+      <path d="M14.5 3A3 3 0 0 1 17 7.7a3.3 3.3 0 0 1 2 5.3 3.4 3.4 0 0 1-2.8 5.6A3 3 0 0 1 12 21V3Z"></path>
+      <path d="M8 10h3M13 10h3M9 15h2M13 15h2"></path>
+    </symbol>
+    <symbol id="icon-chip" viewBox="0 0 24 24">
+      <rect x="7" y="7" width="10" height="10" rx="2"></rect>
+      <path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"></path>
+      <rect x="10" y="10" width="4" height="4" rx="0.7"></rect>
+    </symbol>
+    <symbol id="icon-search-data" viewBox="0 0 24 24">
+      <circle cx="10.5" cy="10.5" r="5.5"></circle>
+      <path d="m15 15 5 5M8.5 10.5h4M10.5 8.5v4"></path>
+    </symbol>
+    <symbol id="icon-agent" viewBox="0 0 24 24">
+      <circle cx="12" cy="5" r="2.5"></circle>
+      <circle cx="5" cy="18" r="2.5"></circle>
+      <circle cx="19" cy="18" r="2.5"></circle>
+      <path d="M10.5 7.2 6.5 15.8M13.5 7.2l4 8.6M7.7 18h8.6"></path>
+    </symbol>
+    <symbol id="icon-chain" viewBox="0 0 24 24">
+      <path d="M10 13a5 5 0 0 0 7.1 0l2-2a5 5 0 0 0-7.1-7.1l-1.1 1.1"></path>
+      <path d="M14 11a5 5 0 0 0-7.1 0l-2 2A5 5 0 0 0 12 20.1l1.1-1.1"></path>
+    </symbol>
+    <symbol id="icon-graph" viewBox="0 0 24 24">
+      <path d="M4 19V5"></path>
+      <path d="M4 19h16"></path>
+      <circle cx="8" cy="15" r="1.8"></circle>
+      <circle cx="13" cy="10" r="1.8"></circle>
+      <circle cx="18" cy="7" r="1.8"></circle>
+      <path d="m9.3 13.7 2.4-2.4M14.6 9.1l1.8-1"></path>
+    </symbol>
+    <symbol id="icon-vector-db" viewBox="0 0 24 24">
+      <ellipse cx="12" cy="5" rx="7" ry="3"></ellipse>
+      <path d="M5 5v10c0 1.7 3.1 3 7 3s7-1.3 7-3V5"></path>
+      <path d="M5 10c0 1.7 3.1 3 7 3s7-1.3 7-3"></path>
+      <path d="M9 20h6M12 18v3"></path>
+    </symbol>
+    <symbol id="icon-eye" viewBox="0 0 24 24">
+      <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"></path>
+      <circle cx="12" cy="12" r="2.5"></circle>
+    </symbol>
+  </svg>
 
   <!-- Effect 9: Global binary data streams -->
   <div id="data-streams" aria-hidden="true">
@@ -1197,7 +1358,7 @@
        NAVIGATION
   ================================================ -->
   <nav id="main-nav" role="navigation" aria-label="Main navigation">
-    <a href="#hero" class="nav-logo" aria-label="Ishar Pasquale Mannara Alam — home">iman.dev</a>
+    <a href="#hero" class="nav-logo" aria-label="Ishar Pasquale Mannara Alam — home">mannaraalam.dev</a>
 
     <ul class="nav-links" role="list">
       <li><a href="#impact">Impact</a></li>
@@ -1240,7 +1401,7 @@
       </h1>
 
       <p class="hero-subtitle">
-        When standard tools satisfice, I engineer the solution. 7+ years designing custom automation systems from scratch — computer vision, robotic arms, satellite monitoring — quality without compromise.
+        When standard tools satisfice, I engineer the solution. 7,5+ years designing custom automation systems from scratch — computer vision, robotic arms, satellite monitoring — quality without compromise.
       </p>
 
       <div class="hero-ctas">
@@ -1274,7 +1435,7 @@
         </article>
 
         <article class="impact-card reveal reveal-delay-3" role="listitem">
-          <span class="impact-number" data-target="1500" data-suffix="K€+">0K€+</span>
+          <span class="impact-number" data-counter="money" data-steps="100K€|200K€|300K€|400K€|500K€|600K€|700K€|800K€|900K€|1M€|1.5M€|2M€+">100K€</span>
           <p class="impact-desc">Revenue generated through custom automation solutions, framework development, and client acquisitions</p>
         </article>
 
@@ -1313,7 +1474,7 @@
             </svg>
           </span>
           <h3 class="pillar-title">Automation Architecture</h3>
-          <p class="pillar-desc">Designing scalable, client-agnostic test frameworks and distributed orchestration platforms — from mobile apps to enterprise desk phones, STBs, and IoT devices.</p>
+          <p class="pillar-desc">Designing <strong>scalable test frameworks</strong> and <strong>CI/CD-native automation platforms</strong> that transform <strong>quality</strong> from a bottleneck into a competitive advantage.</p>
         </article>
 
         <article class="pillar reveal reveal-delay-3" role="listitem">
@@ -1325,7 +1486,7 @@
             </svg>
           </span>
           <h3 class="pillar-title">AI &amp; Computer Vision</h3>
-          <p class="pillar-desc">Building custom solutions with OpenCV, Tesseract OCR, and ML — from video anomaly detection (buffering, freezes) to ArUco-based robotic arm control for physical device validation.</p>
+          <p class="pillar-desc">Applying <strong>computer vision</strong> and <strong>machine learning</strong> to build <strong>self-healing tests</strong>, visual regression systems, and intelligent defect prediction engines.</p>
         </article>
 
         <article class="pillar reveal reveal-delay-4" role="listitem">
@@ -1335,7 +1496,7 @@
             </svg>
           </span>
           <h3 class="pillar-title">R&amp;D &amp; Custom Engineering</h3>
-          <p class="pillar-desc">Conceiving hardware-software hybrid systems: battery monitoring boxes, IR remote simulators, audio capture/inject tools, LoRaWAN satellite monitoring, and DRM bypass via external cameras.</p>
+          <p class="pillar-desc">Engineering <strong>unconventional custom solutions</strong> where no standard tool fits: <strong>AI agents</strong>, edge/cloud integrations, IoT instrumentation, computer vision rigs, and bespoke automation for complex real-world constraints.</p>
         </article>
       </div>
     </div>
@@ -1355,25 +1516,44 @@
       </div>
 
       <div class="tech-tags reveal reveal-delay-2" role="list" aria-label="Technology stack">
-        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" alt="Java logo" loading="lazy" />Java</span>
         <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="Python logo" loading="lazy" />Python</span>
-        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" alt="C++ logo" loading="lazy" />C++</span>
+        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" alt="Java logo" loading="lazy" />Java</span>
+        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/playwright/playwright-original.svg" alt="Playwright logo" loading="lazy" />Playwright</span>
         <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/selenium/selenium-original.svg" alt="Selenium logo" loading="lazy" />Selenium</span>
-        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/opencv/opencv-original.svg" alt="OpenCV logo" loading="lazy" />OpenCV</span>
-        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pytorch/pytorch-original.svg" alt="PyTorch logo" loading="lazy" />PyTorch</span>
+        <span class="tech-tag" role="listitem"><img src="https://cdn.simpleicons.org/appium/ffffff" alt="Appium logo" loading="lazy" />Appium</span>
+        <span class="tech-tag" role="listitem"><img class="tech-logo-mono" src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/webdriverio.svg" alt="WebDriverIO logo" loading="lazy" />WebDriverIO</span>
+        <span class="tech-tag" role="listitem"><svg class="tech-icon" aria-hidden="true"><use href="#icon-api"></use></svg>REST Assured</span>
         <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cucumber/cucumber-plain.svg" alt="Cucumber logo" loading="lazy" />Cucumber</span>
+        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/opencv/opencv-original.svg" alt="OpenCV logo" loading="lazy" />OpenCV</span>
+        <span class="tech-tag" role="listitem"><svg class="tech-icon" aria-hidden="true"><use href="#icon-eye"></use></svg>Tesseract OCR</span>
+        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pytorch/pytorch-original.svg" alt="PyTorch logo" loading="lazy" />PyTorch</span>
+        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tensorflow/tensorflow-original.svg" alt="TensorFlow logo" loading="lazy" />TensorFlow</span>
+        <span class="tech-tag" role="listitem"><img class="tech-logo-mono" src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/openai.svg" alt="OpenAI logo" loading="lazy" />OpenAI APIs</span>
+        <span class="tech-tag" role="listitem"><img class="tech-logo-mono" src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/huggingface.svg" alt="Hugging Face logo" loading="lazy" />Hugging Face</span>
+        <span class="tech-tag" role="listitem"><img class="tech-logo-mono" src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/ollama.svg" alt="Ollama logo" loading="lazy" />Ollama</span>
+        <span class="tech-tag" role="listitem"><svg class="tech-icon" aria-hidden="true"><use href="#icon-brain"></use></svg>LLMs</span>
+        <span class="tech-tag" role="listitem"><svg class="tech-icon" aria-hidden="true"><use href="#icon-chip"></use></svg>SLMs</span>
+        <span class="tech-tag" role="listitem"><svg class="tech-icon" aria-hidden="true"><use href="#icon-search-data"></use></svg>RAG</span>
+        <span class="tech-tag" role="listitem"><svg class="tech-icon" aria-hidden="true"><use href="#icon-agent"></use></svg>AI Agents</span>
+        <span class="tech-tag" role="listitem"><svg class="tech-icon" aria-hidden="true"><use href="#icon-chain"></use></svg>LangChain</span>
+        <span class="tech-tag" role="listitem"><svg class="tech-icon" aria-hidden="true"><use href="#icon-graph"></use></svg>LangGraph</span>
+        <span class="tech-tag" role="listitem"><svg class="tech-icon" aria-hidden="true"><use href="#icon-vector-db"></use></svg>Vector DBs</span>
+        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/fastapi/fastapi-original.svg" alt="FastAPI logo" loading="lazy" />FastAPI</span>
+        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" alt="PostgreSQL logo" loading="lazy" />PostgreSQL</span>
+        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg" alt="AWS logo" loading="lazy" />AWS</span>
+        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/azure/azure-original.svg" alt="Azure logo" loading="lazy" />Azure</span>
+        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/googlecloud/googlecloud-original.svg" alt="Google Cloud logo" loading="lazy" />GCP</span>
+        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/kubernetes/kubernetes-original.svg" alt="Kubernetes logo" loading="lazy" />Kubernetes</span>
+        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" alt="Docker logo" loading="lazy" />Docker</span>
+        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/terraform/terraform-original.svg" alt="Terraform logo" loading="lazy" />Terraform</span>
+        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/githubactions/githubactions-original.svg" alt="GitHub Actions logo" loading="lazy" />GitHub Actions</span>
+        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jenkins/jenkins-original.svg" alt="Jenkins logo" loading="lazy" />Jenkins</span>
+        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/apachekafka/apachekafka-original.svg" alt="Kafka logo" loading="lazy" />Kafka</span>
+        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/grafana/grafana-original.svg" alt="Grafana logo" loading="lazy" />Grafana</span>
+        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/prometheus/prometheus-original.svg" alt="Prometheus logo" loading="lazy" />Prometheus</span>
         <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/arduino/arduino-original.svg" alt="Arduino logo" loading="lazy" />Arduino</span>
         <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/raspberrypi/raspberrypi-original.svg" alt="Raspberry Pi logo" loading="lazy" />Raspberry Pi</span>
-        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jenkins/jenkins-original.svg" alt="Jenkins logo" loading="lazy" />Jenkins</span>
-        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" alt="Docker logo" loading="lazy" />Docker</span>
-        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg" alt="AWS logo" loading="lazy" />AWS</span>
-        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/apachekafka/apachekafka-original.svg" alt="Kafka logo" loading="lazy" />Kafka</span>
-        <span class="tech-tag" role="listitem"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/spring/spring-original.svg" alt="Spring logo" loading="lazy" />Spring Boot</span>
-        <span class="tech-tag" role="listitem">Appium</span>
-        <span class="tech-tag" role="listitem">WebDriverIO</span>
-        <span class="tech-tag" role="listitem">Tesseract OCR</span>
-        <span class="tech-tag" role="listitem">ESP32</span>
-        <span class="tech-tag" role="listitem">Wireshark</span>
+        <span class="tech-tag" role="listitem"><svg class="tech-icon" aria-hidden="true"><use href="#icon-chip"></use></svg>ESP32</span>
       </div>
     </div>
   </section>
@@ -1457,6 +1637,10 @@
     'use strict';
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.querySelectorAll('.tech-tag img').forEach(function(img) {
+      img.loading = 'eager';
+      img.decoding = 'async';
+    });
 
     // ── Scroll progress bar ──────────────────────────────────
     const progressBar = document.getElementById('progress-bar');
@@ -1475,6 +1659,7 @@
 
     // ── Cursor glow ──────────────────────────────────────────
     const cursorGlow = document.getElementById('cursor-glow');
+    const customCursor = document.getElementById('custom-cursor');
     let cursorX = -1000, cursorY = -1000;
     let glowX = -1000, glowY = -1000;
 
@@ -1487,13 +1672,27 @@
     }
 
     if (window.matchMedia('(pointer: fine)').matches) {
+      document.body.classList.add('cursor-active');
       document.addEventListener('mousemove', function(e) {
         cursorX = e.clientX;
         cursorY = e.clientY;
+        if (customCursor) {
+          customCursor.style.left = e.clientX + 'px';
+          customCursor.style.top = e.clientY + 'px';
+          customCursor.classList.add('visible');
+          customCursor.classList.toggle(
+            'hovering',
+            Boolean(e.target.closest('a, button, [role="button"], .tech-tag, .pillar, .impact-card'))
+          );
+        }
+      });
+      document.addEventListener('mouseleave', function() {
+        if (customCursor) customCursor.classList.remove('visible', 'hovering');
       });
       animateCursor();
     } else {
       cursorGlow.style.display = 'none';
+      if (customCursor) customCursor.style.display = 'none';
     }
 
     // ── Parallax hero ────────────────────────────────────────
@@ -1545,7 +1744,37 @@
       return 1 - Math.pow(1 - t, 3);
     }
 
+    function animateMoneyCounter(el) {
+      const steps = (el.getAttribute('data-steps') || '').split('|').filter(Boolean);
+      if (!steps.length) return;
+
+      const duration = 2400;
+      const startTime = performance.now();
+
+      function step(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const index = Math.min(steps.length - 1, Math.floor(progress * steps.length));
+        el.textContent = steps[index];
+
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        } else {
+          el.textContent = steps[steps.length - 1];
+          el.classList.add('locked');
+          setTimeout(function() { el.classList.remove('locked'); }, 600);
+        }
+      }
+
+      requestAnimationFrame(step);
+    }
+
     function animateCounter(el) {
+      if (el.getAttribute('data-counter') === 'money') {
+        animateMoneyCounter(el);
+        return;
+      }
+
       const target = parseInt(el.getAttribute('data-target'), 10);
       const suffix = el.getAttribute('data-suffix') || '';
       const duration = 1800;
@@ -1581,7 +1810,7 @@
       requestAnimationFrame(step);
     }
 
-    const counterEls = document.querySelectorAll('.impact-number[data-target]');
+    const counterEls = document.querySelectorAll('.impact-number[data-target], .impact-number[data-counter]');
     const counterObserver = new IntersectionObserver(
       function(entries) {
         entries.forEach(function(entry) {
