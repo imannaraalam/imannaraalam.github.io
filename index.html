@@ -181,6 +181,522 @@
       transition: width 0.1s linear;
     }
 
+    body.card-mode {
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    body.card-mode #progress-bar {
+      opacity: 0;
+    }
+
+    .experience {
+      background: var(--black);
+      transition: opacity 0.55s var(--ease-premium), visibility 0.55s ease;
+    }
+
+    body.card-mode .experience,
+    body.fullscreen-mode[data-active-face="life"] #work-experience,
+    body.fullscreen-mode[data-active-face="work"] #life-experience {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      min-height: 100vh;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    body.fullscreen-mode[data-active-face="work"] #work-experience,
+    body.fullscreen-mode[data-active-face="life"] #life-experience {
+      position: relative;
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    body.card-mode #data-streams,
+    body.fullscreen-mode[data-active-face="life"] #data-streams {
+      opacity: 0;
+    }
+
+    /* ====================================================
+       3D BUSINESS CARD LANDING
+    ==================================================== */
+    #universe-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      background: #020408;
+      opacity: 1;
+      transition: opacity 0.8s ease;
+    }
+
+    body.fullscreen-mode #universe-canvas {
+      opacity: 0;
+    }
+
+    .card-landing {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      align-items: center;
+      justify-items: center;
+      gap: 1.35rem;
+      padding: 5rem 2rem 2.5rem;
+      overflow: hidden;
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.45s ease, visibility 0.45s ease, transform 0.65s var(--ease-premium);
+    }
+
+    body.fullscreen-mode .card-landing {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: scale(1.08);
+    }
+
+    .card-stage {
+      width: min(400px, 82vw);
+      aspect-ratio: 0.72;
+      max-height: min(640px, calc(100vh - 13.5rem));
+      perspective: 1600px;
+      transform-style: preserve-3d;
+      animation: cardFloat 6.5s ease-in-out infinite;
+    }
+
+    .business-card {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.85s var(--ease-premium);
+    }
+
+    body.show-back .business-card {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 8px;
+      overflow: hidden;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      box-shadow: 0 28px 80px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(41, 151, 255, 0.08);
+    }
+
+    .card-face::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      border-radius: inherit;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), inset 0 -1px 0 rgba(0, 0, 0, 0.24);
+      z-index: 4;
+    }
+
+    .card-face-work {
+      background: #030509;
+    }
+
+    .card-face-life {
+      background: #f7f4ee;
+      color: #171717;
+      transform: rotateY(180deg);
+      box-shadow: 0 28px 80px rgba(0, 0, 0, 0.42), 0 0 0 1px rgba(255, 255, 255, 0.55);
+    }
+
+    .mini-browser-bar {
+      height: 1.35rem;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0 0.55rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.04);
+      flex-shrink: 0;
+      z-index: 5;
+    }
+
+    .card-face-life .mini-browser-bar {
+      border-bottom-color: rgba(0, 0, 0, 0.12);
+      background: rgba(0, 0, 0, 0.035);
+    }
+
+    .mini-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.45);
+    }
+
+    .card-face-life .mini-dot {
+      background: rgba(0, 0, 0, 0.28);
+    }
+
+    .mini-work-preview {
+      position: relative;
+      min-height: 0;
+      flex: 1;
+      padding: 1.35rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .mini-work-preview::before {
+      content: '';
+      position: absolute;
+      inset: -18%;
+      background:
+        linear-gradient(130deg, rgba(41, 151, 255, 0.12), transparent 42%),
+        linear-gradient(40deg, transparent 40%, rgba(50, 210, 254, 0.07));
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    .mini-nav {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      right: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--silver);
+      font-family: var(--font-display);
+      font-size: 0.58rem;
+      letter-spacing: 0.02em;
+      z-index: 2;
+    }
+
+    .mini-menu {
+      width: 18px;
+      display: grid;
+      gap: 3px;
+    }
+
+    .mini-menu span {
+      height: 1px;
+      background: currentColor;
+    }
+
+    .mini-badge {
+      width: fit-content;
+      align-self: center;
+      margin-bottom: 1.1rem;
+      padding: 0.28rem 0.58rem;
+      border: 1px solid rgba(255, 255, 255, 0.11);
+      border-radius: 999px;
+      color: var(--gray-300);
+      font-size: clamp(0.45rem, 1.1vw, 0.58rem);
+      line-height: 1;
+      background: rgba(255, 255, 255, 0.04);
+      z-index: 2;
+    }
+
+    .mini-title {
+      position: relative;
+      z-index: 2;
+      font-family: var(--font-display);
+      font-size: clamp(1.7rem, 5.4vw, 2.65rem);
+      font-weight: 700;
+      letter-spacing: -0.06em;
+      line-height: 0.98;
+      color: var(--white);
+      margin-bottom: 0.9rem;
+    }
+
+    .mini-title span {
+      background: linear-gradient(135deg, var(--blue), var(--cyan), var(--silver));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .mini-copy {
+      position: relative;
+      z-index: 2;
+      max-width: 24rem;
+      margin: 0 auto 1.35rem;
+      color: var(--gray-300);
+      font-size: clamp(0.58rem, 1.35vw, 0.72rem);
+      line-height: 1.55;
+    }
+
+    .mini-ctas {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: center;
+      gap: 0.65rem;
+    }
+
+    .mini-pill {
+      border-radius: 6px;
+      padding: 0.5rem 0.72rem;
+      font-size: 0.58rem;
+      font-weight: 600;
+      color: var(--white);
+      background: var(--blue);
+    }
+
+    .mini-pill.secondary {
+      color: var(--gray-300);
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .life-preview,
+    .life-fullscreen {
+      font-family: var(--font-body);
+    }
+
+    .life-preview {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 2rem;
+      padding: 2rem;
+      min-height: 0;
+    }
+
+    .life-kicker {
+      color: #52616f;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .life-title {
+      margin-top: 0.8rem;
+      max-width: 18rem;
+      font-family: var(--font-display);
+      font-size: clamp(2.15rem, 6vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -0.055em;
+      line-height: 0.98;
+      color: #111111;
+    }
+
+    .life-copy {
+      max-width: 19rem;
+      color: #4d5761;
+      font-size: 0.88rem;
+      line-height: 1.65;
+    }
+
+    .life-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+    }
+
+    .life-tag {
+      border: 1px solid rgba(0, 0, 0, 0.11);
+      border-radius: 999px;
+      padding: 0.45rem 0.75rem;
+      color: #28323c;
+      background: rgba(255, 255, 255, 0.62);
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    .card-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.85rem;
+      flex-wrap: wrap;
+      z-index: 2;
+    }
+
+    .card-action,
+    .back-to-card {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.55rem;
+      min-height: 2.75rem;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 999px;
+      padding: 0 1.05rem;
+      color: var(--white);
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: transform 0.25s var(--ease-premium), border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .card-action:hover,
+    .back-to-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(41, 151, 255, 0.55);
+      background: rgba(41, 151, 255, 0.14);
+      box-shadow: 0 12px 34px rgba(41, 151, 255, 0.14);
+    }
+
+    .card-action svg,
+    .back-to-card svg {
+      width: 17px;
+      height: 17px;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .card-hint {
+      width: 100%;
+      color: var(--gray-300);
+      font-size: 0.78rem;
+      text-align: center;
+      opacity: 0.76;
+      animation: hintPulse 2.6s ease-in-out infinite;
+    }
+
+    .back-to-card {
+      position: fixed;
+      top: 1rem;
+      left: 50%;
+      z-index: 10002;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translate(-50%, -12px);
+    }
+
+    body.fullscreen-mode .back-to-card {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translate(-50%, 0);
+    }
+
+    body.fullscreen-mode[data-active-face="life"] .back-to-card {
+      color: #151515;
+      border-color: rgba(0, 0, 0, 0.16);
+      background: rgba(247, 244, 238, 0.78);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    body.fullscreen-mode[data-active-face="life"] .back-to-card:hover {
+      border-color: rgba(41, 151, 255, 0.55);
+      background: rgba(255, 255, 255, 0.92);
+    }
+
+    @keyframes cardFloat {
+      0%, 100% { transform: translateY(0) rotateX(0deg) rotateZ(-0.2deg); }
+      50%      { transform: translateY(-12px) rotateX(1.4deg) rotateZ(0.35deg); }
+    }
+
+    @keyframes hintPulse {
+      0%, 100% { opacity: 0.55; transform: translateY(0); }
+      50%      { opacity: 0.95; transform: translateY(-3px); }
+    }
+
+    .life-fullscreen {
+      min-height: 100vh;
+      background: #f7f4ee;
+      color: #151515;
+    }
+
+    .life-nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 2.5rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.09);
+      background: rgba(247, 244, 238, 0.78);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .life-logo {
+      font-family: var(--font-display);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+    }
+
+    .life-nav span:last-child {
+      color: #69737d;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .life-hero {
+      min-height: 92vh;
+      display: grid;
+      align-items: center;
+      padding: 7rem 2.5rem 5rem;
+    }
+
+    .life-hero-inner {
+      width: min(980px, 100%);
+      margin: 0 auto;
+    }
+
+    .life-fullscreen .life-title {
+      max-width: 760px;
+      font-size: clamp(3.2rem, 8vw, 7rem);
+      margin-bottom: 1.5rem;
+    }
+
+    .life-fullscreen .life-copy {
+      max-width: 680px;
+      font-size: clamp(1.05rem, 2vw, 1.28rem);
+    }
+
+    .life-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      width: min(1120px, calc(100% - 5rem));
+      margin: 0 auto;
+      padding-bottom: 8rem;
+      background: rgba(0, 0, 0, 0.11);
+    }
+
+    .life-panel {
+      min-height: 220px;
+      padding: 2rem;
+      background: #f7f4ee;
+    }
+
+    .life-panel h3 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      letter-spacing: -0.04em;
+      margin-bottom: 0.75rem;
+    }
+
+    .life-panel p {
+      color: #58626d;
+      line-height: 1.65;
+    }
+
     /* ====================================================
        NAVIGATION
     ==================================================== */
@@ -958,6 +1474,55 @@
        RESPONSIVE
     ==================================================== */
     @media (max-width: 968px) {
+      .card-landing {
+        padding: 4.5rem 1rem 1.5rem;
+        gap: 1rem;
+      }
+
+      .card-stage {
+        width: min(360px, 88vw);
+        max-height: calc(100vh - 13rem);
+        animation-duration: 8s;
+      }
+
+      .mini-work-preview {
+        padding: 1.1rem;
+      }
+
+      .mini-title {
+        font-size: clamp(1.55rem, 9vw, 2.2rem);
+      }
+
+      .mini-copy {
+        font-size: 0.6rem;
+      }
+
+      .life-preview {
+        padding: 1.4rem;
+      }
+
+      .life-title {
+        font-size: clamp(2rem, 10vw, 2.6rem);
+      }
+
+      .card-action {
+        min-height: 2.85rem;
+        padding: 0 0.95rem;
+      }
+
+      .life-grid {
+        grid-template-columns: 1fr;
+        width: calc(100% - 3rem);
+      }
+
+      .life-nav {
+        padding: 1rem 1.5rem;
+      }
+
+      .life-hero {
+        padding: 6rem 1.5rem 4rem;
+      }
+
       nav {
         padding: 1rem 1.5rem;
       }
@@ -1034,6 +1599,24 @@
     }
 
     @media (max-width: 480px) {
+      .card-stage {
+        width: min(330px, 90vw);
+        max-height: calc(100vh - 14rem);
+      }
+
+      .card-controls {
+        width: 100%;
+        gap: 0.65rem;
+      }
+
+      .card-action {
+        flex: 1 1 9rem;
+      }
+
+      .card-hint {
+        font-size: 0.72rem;
+      }
+
       .hero-ctas {
         flex-direction: column;
         width: 100%;
@@ -1337,6 +1920,10 @@
        REDUCED-MOTION OVERRIDES
     ==================================================== */
     @media (prefers-reduced-motion: reduce) {
+      .card-stage     { animation: none; }
+      .business-card  { transition: none; }
+      .card-landing   { transition: none; }
+      .card-hint      { animation: none; }
       .manifesto-word { transition: none; }
       .pillar::after  { animation: none; }
       .pillar-icon    { animation: none; }
@@ -1357,7 +1944,7 @@
     }
   </style>
 </head>
-<body>
+<body class="card-mode" data-active-face="work">
 
   <!-- Scroll Progress Bar -->
   <div id="progress-bar" role="progressbar" aria-label="Page scroll progress"></div>
@@ -1419,6 +2006,75 @@
       <circle cx="12" cy="12" r="2.5"></circle>
     </symbol>
   </svg>
+
+  <canvas id="universe-canvas" aria-hidden="true"></canvas>
+
+  <section class="card-landing" aria-label="Interactive 3D business card">
+    <div class="card-stage" aria-live="polite">
+      <div class="business-card" id="business-card">
+        <article class="card-face card-face-work" aria-label="Work side preview">
+          <div class="mini-browser-bar" aria-hidden="true">
+            <span class="mini-dot"></span>
+            <span class="mini-dot"></span>
+            <span class="mini-dot"></span>
+          </div>
+          <div class="mini-work-preview">
+            <div class="mini-nav" aria-hidden="true">
+              <span>mannaraalam.dev</span>
+              <span class="mini-menu"><span></span><span></span><span></span></span>
+            </div>
+            <div class="mini-badge">Open to strategic opportunities</div>
+            <h2 class="mini-title">Engineering<br /><span>Quality at Scale</span></h2>
+            <p class="mini-copy">Senior Test Automation Architect &amp; Software Engineer. I design intelligent systems that make software reliable, fast, and resilient at enterprise scale.</p>
+            <div class="mini-ctas" aria-hidden="true">
+              <span class="mini-pill">Let's connect</span>
+              <span class="mini-pill secondary">Explore my work</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="card-face card-face-life" aria-label="Life side preview">
+          <div class="mini-browser-bar" aria-hidden="true">
+            <span class="mini-dot"></span>
+            <span class="mini-dot"></span>
+            <span class="mini-dot"></span>
+          </div>
+          <div class="life-preview">
+            <div>
+              <p class="life-kicker">Beyond work</p>
+              <h2 class="life-title">Beyond engineering.</h2>
+            </div>
+            <p class="life-copy">A lighter side for ideas, passions, travel, music, design, experiments, and the parts of life that make the technical work more human.</p>
+            <div class="life-tags" aria-label="Placeholder life interests">
+              <span class="life-tag">Passions</span>
+              <span class="life-tag">Travel</span>
+              <span class="life-tag">Music</span>
+              <span class="life-tag">Experiments</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <div class="card-controls" aria-label="Business card controls">
+      <button class="card-action" id="flip-card" type="button" aria-pressed="false" aria-label="Flip card to the life side">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15.5-6.2"></path><path d="M18.5 2.8v5.5H13"></path><path d="M21 12a9 9 0 0 1-15.5 6.2"></path><path d="M5.5 21.2v-5.5H11"></path></svg>
+        <span>Flip card</span>
+      </button>
+      <button class="card-action" id="open-fullscreen" type="button" aria-label="Open work side fullscreen">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5"></path><path d="M16 3h5v5"></path><path d="M21 16v5h-5"></path><path d="M3 16v5h5"></path><path d="M9 9 3 3"></path><path d="m15 9 6-6"></path><path d="m15 15 6 6"></path><path d="m9 15-6 6"></path></svg>
+        <span>Open fullscreen</span>
+      </button>
+      <p class="card-hint" id="card-hint">Flip the card to discover the light side.</p>
+    </div>
+  </section>
+
+  <button class="back-to-card" id="back-to-card" type="button" aria-label="Back to 3D card">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+    <span>Back to card</span>
+  </button>
+
+  <main id="work-experience" class="experience work-experience" aria-hidden="true" inert>
 
   <!-- Effect 9: Global binary data streams -->
   <div id="data-streams" aria-hidden="true">
@@ -1751,6 +2407,47 @@
   <footer role="contentinfo">
     <p class="footer-text">© 2026 Ishar Pasquale Mannara Alam · Telco &amp; Media · Automotive · Banking &amp; Insurance · IoT · Energy · Finance &amp; Security</p>
   </footer>
+  </main>
+
+  <main id="life-experience" class="experience life-experience" aria-hidden="true" inert>
+    <div class="life-fullscreen">
+      <header class="life-nav">
+        <span class="life-logo">mannaraalam.life</span>
+        <span>Placeholder side</span>
+      </header>
+
+      <section class="life-hero" aria-labelledby="life-title">
+        <div class="life-hero-inner">
+          <p class="life-kicker">Beyond work</p>
+          <h1 class="life-title" id="life-title">Beyond engineering.</h1>
+          <p class="life-copy">This side will become the non-work face of the card: passions, personal projects, travel, music, design instincts, experiments, and the human context behind the professional profile.</p>
+          <div class="life-tags" aria-label="Life side placeholder topics">
+            <span class="life-tag">Passions</span>
+            <span class="life-tag">Travel</span>
+            <span class="life-tag">Music</span>
+            <span class="life-tag">Design</span>
+            <span class="life-tag">Experiments</span>
+            <span class="life-tag">Personal projects</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="life-grid" aria-label="Life side placeholder sections">
+        <article class="life-panel">
+          <h3>Curiosity</h3>
+          <p>Space for the ideas, rabbit holes, and experiments that do not fit inside a professional resume.</p>
+        </article>
+        <article class="life-panel">
+          <h3>Creative inputs</h3>
+          <p>A future home for music, places, visual references, and personal taste that shape how I build.</p>
+        </article>
+        <article class="life-panel">
+          <h3>Human side</h3>
+          <p>A lighter counterweight to architecture, automation, enterprise delivery, and technical depth.</p>
+        </article>
+      </section>
+    </div>
+  </main>
 
   <!-- ================================================
        JAVASCRIPT
@@ -1763,6 +2460,212 @@
       img.loading = 'eager';
       img.decoding = 'async';
     });
+
+    // ── 3D card shell state ──────────────────────────────────
+    const workExperience = document.getElementById('work-experience');
+    const lifeExperience = document.getElementById('life-experience');
+    const cardLanding = document.querySelector('.card-landing');
+    const flipCardBtn = document.getElementById('flip-card');
+    const openFullscreenBtn = document.getElementById('open-fullscreen');
+    const backToCardBtn = document.getElementById('back-to-card');
+    const cardHint = document.getElementById('card-hint');
+    let activeFace = document.body.dataset.activeFace || 'work';
+    let lastCardFocus = null;
+
+    function setSurfaceState(el, isActive) {
+      if (!el) return;
+      el.inert = !isActive;
+      el.setAttribute('aria-hidden', String(!isActive));
+    }
+
+    function updateCardControls() {
+      const isLife = activeFace === 'life';
+      document.body.dataset.activeFace = activeFace;
+      document.body.classList.toggle('show-back', isLife);
+      if (flipCardBtn) {
+        flipCardBtn.setAttribute('aria-pressed', String(isLife));
+        flipCardBtn.setAttribute('aria-label', isLife ? 'Flip card to the work side' : 'Flip card to the life side');
+      }
+      if (openFullscreenBtn) {
+        openFullscreenBtn.setAttribute('aria-label', isLife ? 'Open life side fullscreen' : 'Open work side fullscreen');
+      }
+      if (cardHint) {
+        cardHint.textContent = isLife ? 'Open the light side, or flip back to work.' : 'Flip the card to discover the light side.';
+      }
+    }
+
+    function updateExperienceState() {
+      const fullscreen = document.body.classList.contains('fullscreen-mode');
+      const workActive = fullscreen && activeFace === 'work';
+      const lifeActive = fullscreen && activeFace === 'life';
+      setSurfaceState(workExperience, workActive);
+      setSurfaceState(lifeExperience, lifeActive);
+      if (cardLanding) {
+        cardLanding.setAttribute('aria-hidden', String(fullscreen));
+      }
+    }
+
+    function setActiveFace(face) {
+      activeFace = face === 'life' ? 'life' : 'work';
+      updateCardControls();
+      updateExperienceState();
+    }
+
+    function openActiveFace() {
+      lastCardFocus = document.activeElement;
+      document.body.classList.add('zooming');
+      document.body.classList.remove('card-mode');
+      document.body.classList.add('fullscreen-mode');
+      window.scrollTo({ top: 0, left: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
+      updateExperienceState();
+      setTimeout(function() {
+        document.body.classList.remove('zooming');
+        if (backToCardBtn) backToCardBtn.focus();
+      }, reducedMotion ? 0 : 420);
+    }
+
+    function closeFullscreenFace() {
+      document.body.classList.add('card-mode');
+      document.body.classList.remove('fullscreen-mode', 'zooming');
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      updateExperienceState();
+      if (lastCardFocus && typeof lastCardFocus.focus === 'function') {
+        lastCardFocus.focus();
+      } else if (openFullscreenBtn) {
+        openFullscreenBtn.focus();
+      }
+    }
+
+    function getFocusable(container) {
+      if (!container) return [];
+      return Array.from(container.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'))
+        .filter(function(el) {
+          const style = window.getComputedStyle(el);
+          const rect = el.getBoundingClientRect();
+          return style.visibility !== 'hidden' && style.display !== 'none' && rect.width > 0 && rect.height > 0;
+        });
+    }
+
+    function trapFullscreenFocus(e) {
+      if (!document.body.classList.contains('fullscreen-mode') || e.key !== 'Tab') return;
+      const activeSurface = activeFace === 'life' ? lifeExperience : workExperience;
+      const focusable = [backToCardBtn].concat(getFocusable(activeSurface)).filter(Boolean);
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+
+    if (flipCardBtn) {
+      flipCardBtn.addEventListener('click', function() {
+        setActiveFace(activeFace === 'work' ? 'life' : 'work');
+      });
+    }
+
+    if (openFullscreenBtn) {
+      openFullscreenBtn.addEventListener('click', openActiveFace);
+    }
+
+    if (backToCardBtn) {
+      backToCardBtn.addEventListener('click', closeFullscreenFace);
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && document.body.classList.contains('fullscreen-mode')) {
+        closeFullscreenFace();
+        return;
+      }
+      trapFullscreenFocus(e);
+    });
+
+    setActiveFace(activeFace);
+
+    // ── Universe canvas backdrop ──────────────────────────────
+    (function() {
+      const canvas = document.getElementById('universe-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let stars = [];
+      let width = 0;
+      let height = 0;
+      let animId = null;
+
+      function resizeUniverse() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = Math.floor(width * dpr);
+        canvas.height = Math.floor(height * dpr);
+        canvas.style.width = width + 'px';
+        canvas.style.height = height + 'px';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        const count = width < 720 ? 90 : 150;
+        stars = Array.from({ length: count }, function() {
+          return {
+            x: Math.random() * width,
+            y: Math.random() * height,
+            z: Math.random() * 0.8 + 0.2,
+            r: Math.random() * 1.4 + 0.3,
+            a: Math.random() * 0.55 + 0.2,
+            drift: Math.random() * 0.18 + 0.04
+          };
+        });
+        drawUniverse(0);
+      }
+
+      function drawUniverse(time) {
+        ctx.clearRect(0, 0, width, height);
+        const gradient = ctx.createLinearGradient(0, 0, width, height);
+        gradient.addColorStop(0, '#020408');
+        gradient.addColorStop(0.55, '#050711');
+        gradient.addColorStop(1, '#010206');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, width, height);
+
+        stars.forEach(function(star) {
+          const y = reducedMotion ? star.y : (star.y + time * 0.006 * star.drift) % height;
+          const pulse = reducedMotion ? 1 : 0.75 + Math.sin(time * 0.0012 + star.x) * 0.25;
+          ctx.beginPath();
+          ctx.fillStyle = 'rgba(192, 200, 216,' + (star.a * pulse) + ')';
+          ctx.arc(star.x, y, star.r * star.z, 0, Math.PI * 2);
+          ctx.fill();
+        });
+
+        ctx.save();
+        ctx.globalAlpha = 0.16;
+        ctx.strokeStyle = 'rgba(41, 151, 255, 0.18)';
+        ctx.lineWidth = 1;
+        for (let i = 0; i < stars.length; i += 9) {
+          const a = stars[i];
+          const b = stars[(i + 17) % stars.length];
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          if (Math.sqrt(dx * dx + dy * dy) < 180) {
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
+        ctx.restore();
+
+        if (!reducedMotion) {
+          animId = requestAnimationFrame(drawUniverse);
+        }
+      }
+
+      resizeUniverse();
+      window.addEventListener('resize', resizeUniverse, { passive: true });
+      if (!reducedMotion) {
+        animId = requestAnimationFrame(drawUniverse);
+      }
+    })();
 
     // ── Scroll progress bar ──────────────────────────────────
     const progressBar = document.getElementById('progress-bar');
@@ -1804,7 +2707,7 @@
           customCursor.classList.add('visible');
           customCursor.classList.toggle(
             'hovering',
-            Boolean(e.target.closest('a, button, [role="button"], .tech-tag, .client-name, .pillar, .impact-card'))
+            Boolean(e.target.closest('a, button, [role="button"], .card-action, .back-to-card, .tech-tag, .client-name, .life-tag, .life-panel, .pillar, .impact-card'))
           );
         }
       });
