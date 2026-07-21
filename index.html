@@ -521,18 +521,30 @@
       gap: 0.65rem;
     }
 
-    .mini-pill {
-      border-radius: 6px;
-      padding: 0.5rem 0.72rem;
+    .mini-scroll-prompt {
+      position: relative;
+      z-index: 2;
+      align-self: center;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.45rem 0.75rem;
+      border: 1px solid rgba(255, 255, 255, 0.11);
+      border-radius: 999px;
+      color: var(--gray-300);
+      background: rgba(255, 255, 255, 0.045);
       font-size: 0.58rem;
       font-weight: 600;
-      color: var(--white);
-      background: var(--blue);
     }
 
-    .mini-pill.secondary {
-      color: var(--gray-300);
-      background: rgba(255, 255, 255, 0.07);
+    .mini-scroll-prompt::after {
+      content: '';
+      width: 4px;
+      height: 4px;
+      border-right: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+      transform: rotate(45deg) translateY(-1px);
+      opacity: 0.72;
     }
 
     .life-preview,
@@ -634,13 +646,24 @@
     }
 
     #flip-card {
-      left: 0.9rem;
-      bottom: 0.9rem;
+      left: -1rem;
+      top: 50%;
+      bottom: auto;
+      min-height: 2.35rem;
+      padding: 0 0.9rem;
+      transform: translate(-100%, -50%);
     }
 
     #open-fullscreen {
-      right: 0.9rem;
-      bottom: 0.9rem;
+      width: 1px;
+      height: 1px;
+      min-height: 1px;
+      padding: 0;
+      pointer-events: none;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+      opacity: 0;
     }
 
     .card-action:hover,
@@ -649,6 +672,23 @@
       border-color: rgba(41, 151, 255, 0.55);
       background: rgba(41, 151, 255, 0.14);
       box-shadow: 0 12px 34px rgba(41, 151, 255, 0.14);
+    }
+
+    #flip-card:hover {
+      transform: translate(calc(-100% - 2px), -50%);
+    }
+
+    #open-fullscreen:focus-visible {
+      right: 0.9rem;
+      bottom: 0.9rem;
+      width: auto;
+      height: auto;
+      min-height: 2.05rem;
+      padding: 0 0.65rem;
+      pointer-events: auto;
+      clip-path: none;
+      opacity: 1;
+      white-space: normal;
     }
 
     .back-to-card:hover {
@@ -689,6 +729,41 @@
       opacity: 0.68;
       animation: hintPulse 2.6s ease-in-out infinite;
       pointer-events: none;
+    }
+
+    .hero-scroll-prompt {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.65rem;
+      border: 1px solid rgba(255, 255, 255, 0.11);
+      border-radius: 999px;
+      padding: 0.68rem 1rem;
+      color: var(--gray-300);
+      background: rgba(255, 255, 255, 0.045);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .hero-scroll-prompt strong {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    .hero-scroll-prompt span {
+      color: var(--gray-400);
+      font-size: 0.78rem;
+    }
+
+    .hero-scroll-prompt::after {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-right: 1px solid var(--cyan);
+      border-bottom: 1px solid var(--cyan);
+      transform: rotate(45deg) translateY(-1px);
     }
 
     .back-to-card {
@@ -1603,7 +1678,7 @@
 
       .card-stage {
         width: min(430px, 92vw, 62vh);
-        max-height: calc(100vh - 2rem);
+        max-height: calc(100vh - 6.5rem);
       }
 
       .card-float-shell {
@@ -1634,6 +1709,17 @@
         min-height: 2.35rem;
         padding: 0 0.78rem;
         font-size: 0.78rem;
+      }
+
+      #flip-card {
+        left: 50%;
+        top: auto;
+        bottom: -3.1rem;
+        transform: translateX(-50%);
+      }
+
+      #flip-card:hover {
+        transform: translate(-50%, -2px);
       }
 
       .back-to-card {
@@ -1731,28 +1817,44 @@
 
     @media (max-width: 480px) {
       .card-stage {
-        width: min(350px, 92vw, 60vh);
-        max-height: calc(100vh - 1.5rem);
+        width: min(340px, 90vw, 56vh);
+        max-height: calc(100vh - 6.5rem);
       }
 
       #flip-card {
-        left: 0.65rem;
-        bottom: 0.65rem;
+        left: 50%;
+        top: auto;
+        bottom: -3.1rem;
+        min-height: 2.45rem;
+        transform: translateX(-50%);
       }
 
-      #open-fullscreen {
-        right: 0.65rem;
-        bottom: 0.65rem;
+      #flip-card:hover {
+        transform: translate(-50%, -2px);
       }
 
       .card-hint {
-        bottom: 3.05rem;
+        bottom: 1rem;
         font-size: 0.62rem;
+      }
+
+      .back-to-card {
+        top: 0.75rem;
+        min-height: 2.25rem;
+        padding: 0 0.8rem;
+        font-size: 0.82rem;
       }
 
       .hero-ctas {
         flex-direction: column;
         width: 100%;
+      }
+
+      .hero-scroll-prompt {
+        flex-direction: column;
+        gap: 0.25rem;
+        width: 100%;
+        padding: 0.8rem 1rem;
       }
 
       .btn {
@@ -2157,8 +2259,7 @@
               <h2 class="mini-title">Engineering<br /><span>Quality at Scale</span></h2>
               <p class="mini-copy">Senior Test Automation Architect &amp; Software Engineer. I design intelligent systems that make software reliable, fast, and resilient at enterprise scale.</p>
               <div class="mini-ctas" aria-hidden="true">
-                <span class="mini-pill">Let's connect</span>
-                <span class="mini-pill secondary">Explore my work</span>
+                <span class="mini-scroll-prompt">Scroll to unfold the story</span>
               </div>
             </div>
           </article>
@@ -2190,7 +2291,7 @@
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5"></path><path d="M16 3h5v5"></path><path d="M21 16v5h-5"></path><path d="M3 16v5h5"></path><path d="M9 9 3 3"></path><path d="m15 9 6-6"></path><path d="m15 15 6 6"></path><path d="m9 15-6 6"></path></svg>
           <span>Open</span>
         </button>
-        <p class="card-hint" id="card-hint">Wheel or pinch to open.</p>
+        <p class="card-hint" id="card-hint">Double click or wheel to open</p>
       </div>
     </div>
   </section>
@@ -2262,8 +2363,10 @@
       </p>
 
       <div class="hero-ctas">
-        <a href="#connect" class="btn btn-primary" aria-label="Connect with Ishar Pasquale Mannara Alam">Let's connect</a>
-        <a href="#what-i-build" class="btn btn-secondary" aria-label="Explore Pasquale's work">Explore my work</a>
+        <div class="hero-scroll-prompt">
+          <strong>Scroll through the story</strong>
+          <span>Connect at the end</span>
+        </div>
       </div>
     </div>
 
@@ -2599,9 +2702,12 @@
     let activeFace = document.body.dataset.activeFace || 'work';
     let lastCardFocus = null;
     let dragState = null;
-    let pinchStartDistance = 0;
+    let pointerDownPoint = null;
+    let lastTapPoint = null;
     let wheelZoomLocked = false;
     let counterAnimationToken = 0;
+    const doubleTapDelay = 280;
+    const doubleTapDistance = 24;
 
     function setSurfaceState(el, isActive) {
       if (!el) return;
@@ -2621,7 +2727,7 @@
         openFullscreenBtn.setAttribute('aria-label', isLife ? 'Open life side fullscreen' : 'Open work side fullscreen');
       }
       if (cardHint) {
-        cardHint.textContent = isLife ? 'Wheel or pinch to open life.' : 'Wheel or pinch to open work.';
+        cardHint.textContent = window.matchMedia('(pointer: coarse)').matches ? 'Double tap to open' : 'Double click or wheel to open';
       }
     }
 
@@ -2689,6 +2795,13 @@
       return { x: dx * scale, y: dy * scale };
     }
 
+    function getPointDistance(a, b) {
+      if (!a || !b) return Infinity;
+      const dx = a.x - b.x;
+      const dy = a.y - b.y;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+
     function isPointInsideCard(e) {
       if (!cardStage) return false;
       const rect = cardStage.getBoundingClientRect();
@@ -2703,6 +2816,11 @@
         pointerId: e.pointerId,
         startX: e.clientX,
         startY: e.clientY
+      };
+      pointerDownPoint = {
+        x: e.clientX,
+        y: e.clientY,
+        time: performance.now()
       };
       cardStage.classList.remove('is-returning');
       cardStage.classList.add('is-dragging');
@@ -2735,6 +2853,8 @@
       cardStage.classList.remove('is-dragging');
       cardStage.classList.add('is-returning');
       setCardVars({ '--card-x': '0px', '--card-y': '0px' });
+      handleCardDoubleTap(e);
+      pointerDownPoint = null;
       resetCardPointerEffect();
       window.setTimeout(function() {
         if (cardStage) cardStage.classList.remove('is-returning');
@@ -2755,19 +2875,30 @@
       }, 900);
     }
 
-    function getTouchDistance(touches) {
-      const dx = touches[0].clientX - touches[1].clientX;
-      const dy = touches[0].clientY - touches[1].clientY;
-      return Math.sqrt(dx * dx + dy * dy);
+    function handleCardDoubleTap(e) {
+      if (!cardStage || reducedMotion || document.body.classList.contains('fullscreen-mode')) return;
+      if (!e || e.pointerType !== 'touch') return;
+      if (e.target.closest('button, a, [role="button"]')) return;
+      const currentPoint = { x: e.clientX, y: e.clientY, time: performance.now() };
+      if (getPointDistance(pointerDownPoint, currentPoint) > 12) {
+        lastTapPoint = null;
+        return;
+      }
+      if (
+        lastTapPoint &&
+        currentPoint.time - lastTapPoint.time <= doubleTapDelay &&
+        getPointDistance(lastTapPoint, currentPoint) <= doubleTapDistance
+      ) {
+        lastTapPoint = null;
+        openActiveFace();
+        return;
+      }
+      lastTapPoint = currentPoint;
     }
 
-    function handleCardPinchZoom(e) {
-      if (reducedMotion || document.body.classList.contains('fullscreen-mode')) return;
-      if (e.touches.length !== 2 || !pinchStartDistance) return;
-      const distance = getTouchDistance(e.touches);
-      if (distance - pinchStartDistance < 38) return;
-      e.preventDefault();
-      pinchStartDistance = 0;
+    function handleCardDoubleClick(e) {
+      if (!cardStage || reducedMotion || document.body.classList.contains('fullscreen-mode')) return;
+      if (e.target.closest('button, a, [role="button"]')) return;
       openActiveFace();
     }
 
@@ -2889,13 +3020,7 @@
         if (!dragState) resetCardPointerEffect();
       });
       cardStage.addEventListener('wheel', handleCardWheelZoom, { passive: false });
-      cardStage.addEventListener('touchstart', function(e) {
-        pinchStartDistance = e.touches.length === 2 ? getTouchDistance(e.touches) : 0;
-      }, { passive: true });
-      cardStage.addEventListener('touchmove', handleCardPinchZoom, { passive: false });
-      cardStage.addEventListener('touchend', function() {
-        pinchStartDistance = 0;
-      }, { passive: true });
+      cardStage.addEventListener('dblclick', handleCardDoubleClick);
       document.addEventListener('pointermove', function(e) {
         if (dragState || reducedMotion || document.body.classList.contains('fullscreen-mode')) return;
         if (cardStage.classList.contains('is-pointer-active') && !isPointInsideCard(e)) {
