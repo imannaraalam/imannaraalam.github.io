@@ -231,7 +231,10 @@
       height: 100%;
       z-index: 0;
       pointer-events: none;
-      background: #020408;
+      background:
+        radial-gradient(circle at 18% 18%, rgba(34, 211, 238, 0.14), transparent 28%),
+        radial-gradient(circle at 78% 72%, rgba(20, 184, 166, 0.12), transparent 32%),
+        linear-gradient(135deg, #02070b 0%, #041923 52%, #02060d 100%);
       opacity: 1;
       transition: opacity 0.8s ease;
     }
@@ -245,11 +248,9 @@
       inset: 0;
       z-index: 40;
       display: grid;
-      grid-template-rows: 1fr auto;
       align-items: center;
       justify-items: center;
-      gap: 1.35rem;
-      padding: 5rem 2rem 2.5rem;
+      padding: clamp(1.35rem, 3vh, 2.5rem);
       overflow: hidden;
       opacity: 1;
       visibility: visible;
@@ -264,12 +265,49 @@
     }
 
     .card-stage {
-      width: min(400px, 82vw);
+      --tilt-x: 0deg;
+      --tilt-y: 0deg;
+      --card-x: 0px;
+      --card-y: 0px;
+      --glare-x: 50%;
+      --glare-y: 28%;
+      --glare-opacity: 0.16;
+      position: relative;
+      width: min(520px, 90vw, 64vh);
       aspect-ratio: 0.72;
-      max-height: min(640px, calc(100vh - 13.5rem));
+      max-height: min(760px, calc(100vh - 3.25rem));
       perspective: 1600px;
       transform-style: preserve-3d;
-      animation: cardFloat 6.5s ease-in-out infinite;
+      transform: translate3d(var(--card-x), var(--card-y), 0);
+      transition: transform 0.92s cubic-bezier(0.18, 1.28, 0.22, 1), filter 0.35s ease;
+      cursor: grab;
+      touch-action: none;
+    }
+
+    .card-stage.is-dragging {
+      cursor: grabbing;
+      transition: none;
+    }
+
+    .card-stage.is-returning {
+      transition: transform 1.16s cubic-bezier(0.16, 1.32, 0.26, 1);
+    }
+
+    .card-float-shell {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      animation: cardFloat 7.2s ease-in-out infinite;
+      filter: drop-shadow(0 34px 48px rgba(0, 0, 0, 0.38));
+      transition: filter 0.35s ease;
+    }
+
+    .card-stage:hover .card-float-shell,
+    .card-stage.is-dragging .card-float-shell,
+    .card-stage.is-wheel-zooming .card-float-shell {
+      filter: drop-shadow(0 42px 62px rgba(2, 14, 22, 0.52));
     }
 
     .business-card {
@@ -277,11 +315,27 @@
       width: 100%;
       height: 100%;
       transform-style: preserve-3d;
-      transition: transform 0.85s var(--ease-premium);
+      transform: rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+      transition: transform 1.16s cubic-bezier(0.18, 1, 0.24, 1);
+      will-change: transform;
+    }
+
+    .card-stage.is-pointer-active .business-card,
+    .card-stage.is-dragging .business-card {
+      transition-duration: 0.28s;
     }
 
     body.show-back .business-card {
-      transform: rotateY(180deg);
+      transform: rotateX(var(--tilt-x)) rotateY(calc(180deg + var(--tilt-y)));
+    }
+
+    body.zooming .card-stage {
+      transform: translate3d(var(--card-x), var(--card-y), 0) scale(1.18);
+      filter: blur(0.5px);
+    }
+
+    body.zooming .card-float-shell {
+      filter: drop-shadow(0 20px 90px rgba(34, 211, 238, 0.28));
     }
 
     .card-face {
@@ -289,68 +343,89 @@
       inset: 0;
       display: flex;
       flex-direction: column;
-      border: 1px solid rgba(255, 255, 255, 0.22);
+      border: 1px solid rgba(255, 255, 255, 0.28);
       border-radius: 8px;
       overflow: hidden;
       backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
-      box-shadow: 0 28px 80px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(41, 151, 255, 0.08);
+      isolation: isolate;
+      box-shadow:
+        0 34px 90px rgba(0, 0, 0, 0.48),
+        0 0 0 1px rgba(41, 151, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.26);
     }
 
     .card-face::before {
       content: '';
       position: absolute;
-      inset: 0;
+      inset: -1px;
       pointer-events: none;
       border-radius: inherit;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), inset 0 -1px 0 rgba(0, 0, 0, 0.24);
+      background:
+        linear-gradient(116deg, transparent 0 24%, rgba(255, 255, 255, 0.18) 33%, transparent 44% 100%),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.38), transparent 12% 88%, rgba(34, 211, 238, 0.3));
+      opacity: 0.42;
+      mix-blend-mode: screen;
       z-index: 4;
     }
 
+    .card-face::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      border-radius: inherit;
+      background:
+        radial-gradient(circle at var(--glare-x) var(--glare-y), rgba(255, 255, 255, 0.32), rgba(34, 211, 238, 0.12) 18%, transparent 34%),
+        repeating-linear-gradient(112deg, rgba(255, 255, 255, 0.12) 0 1px, transparent 1px 9px),
+        repeating-radial-gradient(circle at 18% 22%, rgba(255, 255, 255, 0.055) 0 1px, transparent 1px 4px);
+      opacity: var(--glare-opacity);
+      mix-blend-mode: screen;
+      z-index: 4;
+      transition: opacity 1.05s ease;
+    }
+
     .card-face-work {
-      background: #030509;
+      background:
+        linear-gradient(135deg, rgba(34, 211, 238, 0.08), transparent 36%),
+        #030509;
     }
 
     .card-face-life {
-      background: #f7f4ee;
+      background:
+        linear-gradient(135deg, rgba(255, 252, 242, 0.94), rgba(237, 224, 202, 0.72) 48%, rgba(250, 246, 236, 0.96)),
+        #f3ead7;
       color: #171717;
       transform: rotateY(180deg);
-      box-shadow: 0 28px 80px rgba(0, 0, 0, 0.42), 0 0 0 1px rgba(255, 255, 255, 0.55);
+      border-color: rgba(93, 69, 43, 0.2);
+      box-shadow:
+        0 30px 78px rgba(46, 32, 18, 0.34),
+        0 0 0 1px rgba(255, 255, 255, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.68);
     }
 
-    .mini-browser-bar {
-      height: 1.35rem;
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-      padding: 0 0.55rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      background: rgba(255, 255, 255, 0.04);
-      flex-shrink: 0;
-      z-index: 5;
+    .card-face-life::before {
+      background:
+        linear-gradient(105deg, rgba(255, 255, 255, 0.28), transparent 34% 68%, rgba(92, 65, 38, 0.08)),
+        repeating-linear-gradient(7deg, rgba(97, 68, 40, 0.035) 0 1px, transparent 1px 7px);
+      opacity: 0.5;
+      mix-blend-mode: multiply;
     }
 
-    .card-face-life .mini-browser-bar {
-      border-bottom-color: rgba(0, 0, 0, 0.12);
-      background: rgba(0, 0, 0, 0.035);
-    }
-
-    .mini-dot {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.45);
-    }
-
-    .card-face-life .mini-dot {
-      background: rgba(0, 0, 0, 0.28);
+    .card-face-life::after {
+      background:
+        radial-gradient(circle at var(--glare-x) var(--glare-y), rgba(255, 255, 255, 0.32), rgba(182, 137, 82, 0.08) 22%, transparent 42%),
+        repeating-radial-gradient(circle at 22% 18%, rgba(96, 72, 45, 0.07) 0 0.8px, transparent 0.8px 3.5px),
+        repeating-linear-gradient(98deg, rgba(117, 86, 52, 0.032) 0 1px, transparent 1px 10px);
+      opacity: var(--glare-opacity);
+      mix-blend-mode: multiply;
     }
 
     .mini-work-preview {
       position: relative;
       min-height: 0;
       flex: 1;
-      padding: 1.35rem;
+      padding: 1.65rem;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -471,7 +546,7 @@
       flex-direction: column;
       justify-content: space-between;
       gap: 2rem;
-      padding: 2rem;
+      padding: 2.35rem;
       min-height: 0;
     }
 
@@ -518,12 +593,12 @@
     }
 
     .card-controls {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.85rem;
-      flex-wrap: wrap;
-      z-index: 2;
+      position: absolute;
+      inset: 0;
+      z-index: 12;
+      pointer-events: none;
+      transform: translateZ(2px);
+      transform-style: flat;
     }
 
     .card-action,
@@ -531,11 +606,9 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 0.55rem;
-      min-height: 2.75rem;
+      gap: 0.45rem;
       border: 1px solid rgba(255, 255, 255, 0.14);
       border-radius: 999px;
-      padding: 0 1.05rem;
       color: var(--white);
       background: rgba(255, 255, 255, 0.08);
       backdrop-filter: blur(18px);
@@ -546,6 +619,30 @@
       transition: transform 0.25s var(--ease-premium), border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
     }
 
+    .card-action {
+      position: absolute;
+      min-height: 2.05rem;
+      padding: 0 0.65rem;
+      pointer-events: auto;
+      z-index: 2;
+      color: rgba(245, 249, 255, 0.78);
+      background: rgba(3, 14, 20, 0.34);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      font-size: 0.72rem;
+      opacity: 0.78;
+    }
+
+    #flip-card {
+      left: 0.9rem;
+      bottom: 0.9rem;
+    }
+
+    #open-fullscreen {
+      right: 0.9rem;
+      bottom: 0.9rem;
+    }
+
     .card-action:hover,
     .back-to-card:hover {
       transform: translateY(-2px);
@@ -554,10 +651,20 @@
       box-shadow: 0 12px 34px rgba(41, 151, 255, 0.14);
     }
 
+    .back-to-card:hover {
+      transform: translate(-50%, -2px);
+    }
+
+    .card-action:focus-visible,
+    .back-to-card:focus-visible {
+      outline: 2px solid rgba(50, 210, 254, 0.88);
+      outline-offset: 3px;
+    }
+
     .card-action svg,
     .back-to-card svg {
-      width: 17px;
-      height: 17px;
+      width: 16px;
+      height: 16px;
       stroke: currentColor;
       stroke-width: 1.8;
       fill: none;
@@ -566,12 +673,22 @@
     }
 
     .card-hint {
-      width: 100%;
+      position: absolute;
+      left: 50%;
+      bottom: 3.35rem;
+      width: max-content;
+      max-width: calc(100% - 2rem);
+      transform: translateX(-50%);
       color: var(--gray-300);
-      font-size: 0.78rem;
+      background: rgba(3, 14, 20, 0.28);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      padding: 0.28rem 0.58rem;
+      font-size: 0.66rem;
       text-align: center;
-      opacity: 0.76;
+      opacity: 0.68;
       animation: hintPulse 2.6s ease-in-out infinite;
+      pointer-events: none;
     }
 
     .back-to-card {
@@ -579,10 +696,15 @@
       top: 1rem;
       left: 50%;
       z-index: 10002;
+      min-height: 2.35rem;
+      padding: 0 0.95rem;
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
-      transform: translate(-50%, -12px);
+      transform: translate(-50%, -10px);
+      box-shadow:
+        0 12px 34px rgba(0, 0, 0, 0.24),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
 
     body.fullscreen-mode .back-to-card {
@@ -595,7 +717,7 @@
     body.fullscreen-mode[data-active-face="life"] .back-to-card {
       color: #151515;
       border-color: rgba(0, 0, 0, 0.16);
-      background: rgba(247, 244, 238, 0.78);
+      background: rgba(243, 234, 215, 0.84);
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
     }
 
@@ -605,18 +727,19 @@
     }
 
     @keyframes cardFloat {
-      0%, 100% { transform: translateY(0) rotateX(0deg) rotateZ(-0.2deg); }
-      50%      { transform: translateY(-12px) rotateX(1.4deg) rotateZ(0.35deg); }
+      0%, 100% { transform: translateY(0) rotateX(0.2deg) rotateZ(-0.35deg); }
+      35%      { transform: translateY(-18px) rotateX(1.8deg) rotateZ(0.55deg); }
+      68%      { transform: translateY(9px) rotateX(-0.8deg) rotateZ(-0.15deg); }
     }
 
     @keyframes hintPulse {
-      0%, 100% { opacity: 0.55; transform: translateY(0); }
-      50%      { opacity: 0.95; transform: translateY(-3px); }
+      0%, 100% { opacity: 0.48; transform: translate(-50%, 0); }
+      50%      { opacity: 0.84; transform: translate(-50%, -2px); }
     }
 
     .life-fullscreen {
       min-height: 100vh;
-      background: #f7f4ee;
+      background: #f3ead7;
       color: #151515;
     }
 
@@ -629,7 +752,7 @@
       align-items: center;
       padding: 1.25rem 2.5rem;
       border-bottom: 1px solid rgba(0, 0, 0, 0.09);
-      background: rgba(247, 244, 238, 0.78);
+      background: rgba(243, 234, 215, 0.82);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
     }
@@ -1475,13 +1598,15 @@
     ==================================================== */
     @media (max-width: 968px) {
       .card-landing {
-        padding: 4.5rem 1rem 1.5rem;
-        gap: 1rem;
+        padding: 1rem;
       }
 
       .card-stage {
-        width: min(360px, 88vw);
-        max-height: calc(100vh - 13rem);
+        width: min(430px, 92vw, 62vh);
+        max-height: calc(100vh - 2rem);
+      }
+
+      .card-float-shell {
         animation-duration: 8s;
       }
 
@@ -1506,8 +1631,14 @@
       }
 
       .card-action {
-        min-height: 2.85rem;
-        padding: 0 0.95rem;
+        min-height: 2.35rem;
+        padding: 0 0.78rem;
+        font-size: 0.78rem;
+      }
+
+      .back-to-card {
+        top: 1rem;
+        left: 50%;
       }
 
       .life-grid {
@@ -1600,21 +1731,23 @@
 
     @media (max-width: 480px) {
       .card-stage {
-        width: min(330px, 90vw);
-        max-height: calc(100vh - 14rem);
+        width: min(350px, 92vw, 60vh);
+        max-height: calc(100vh - 1.5rem);
       }
 
-      .card-controls {
-        width: 100%;
-        gap: 0.65rem;
+      #flip-card {
+        left: 0.65rem;
+        bottom: 0.65rem;
       }
 
-      .card-action {
-        flex: 1 1 9rem;
+      #open-fullscreen {
+        right: 0.65rem;
+        bottom: 0.65rem;
       }
 
       .card-hint {
-        font-size: 0.72rem;
+        bottom: 3.05rem;
+        font-size: 0.62rem;
       }
 
       .hero-ctas {
@@ -1920,7 +2053,8 @@
        REDUCED-MOTION OVERRIDES
     ==================================================== */
     @media (prefers-reduced-motion: reduce) {
-      .card-stage     { animation: none; }
+      .card-stage     { transition: none; }
+      .card-float-shell { animation: none; }
       .business-card  { transition: none; }
       .card-landing   { transition: none; }
       .card-hint      { animation: none; }
@@ -2011,61 +2145,53 @@
 
   <section class="card-landing" aria-label="Interactive 3D business card">
     <div class="card-stage" aria-live="polite">
-      <div class="business-card" id="business-card">
-        <article class="card-face card-face-work" aria-label="Work side preview">
-          <div class="mini-browser-bar" aria-hidden="true">
-            <span class="mini-dot"></span>
-            <span class="mini-dot"></span>
-            <span class="mini-dot"></span>
-          </div>
-          <div class="mini-work-preview">
-            <div class="mini-nav" aria-hidden="true">
-              <span>mannaraalam.dev</span>
-              <span class="mini-menu"><span></span><span></span><span></span></span>
+      <div class="card-float-shell">
+        <div class="business-card" id="business-card">
+          <article class="card-face card-face-work" aria-label="Work side preview">
+            <div class="mini-work-preview">
+              <div class="mini-nav" aria-hidden="true">
+                <span>mannaraalam.dev</span>
+                <span class="mini-menu"><span></span><span></span><span></span></span>
+              </div>
+              <div class="mini-badge">Open to strategic opportunities</div>
+              <h2 class="mini-title">Engineering<br /><span>Quality at Scale</span></h2>
+              <p class="mini-copy">Senior Test Automation Architect &amp; Software Engineer. I design intelligent systems that make software reliable, fast, and resilient at enterprise scale.</p>
+              <div class="mini-ctas" aria-hidden="true">
+                <span class="mini-pill">Let's connect</span>
+                <span class="mini-pill secondary">Explore my work</span>
+              </div>
             </div>
-            <div class="mini-badge">Open to strategic opportunities</div>
-            <h2 class="mini-title">Engineering<br /><span>Quality at Scale</span></h2>
-            <p class="mini-copy">Senior Test Automation Architect &amp; Software Engineer. I design intelligent systems that make software reliable, fast, and resilient at enterprise scale.</p>
-            <div class="mini-ctas" aria-hidden="true">
-              <span class="mini-pill">Let's connect</span>
-              <span class="mini-pill secondary">Explore my work</span>
-            </div>
-          </div>
-        </article>
+          </article>
 
-        <article class="card-face card-face-life" aria-label="Life side preview">
-          <div class="mini-browser-bar" aria-hidden="true">
-            <span class="mini-dot"></span>
-            <span class="mini-dot"></span>
-            <span class="mini-dot"></span>
-          </div>
-          <div class="life-preview">
-            <div>
-              <p class="life-kicker">Beyond work</p>
-              <h2 class="life-title">Beyond engineering.</h2>
+          <article class="card-face card-face-life" aria-label="Life side preview">
+            <div class="life-preview">
+              <div>
+                <p class="life-kicker">Beyond work</p>
+                <h2 class="life-title">Beyond engineering.</h2>
+              </div>
+              <p class="life-copy">A lighter side for ideas, passions, travel, music, design, experiments, and the parts of life that make the technical work more human.</p>
+              <div class="life-tags" aria-label="Placeholder life interests">
+                <span class="life-tag">Passions</span>
+                <span class="life-tag">Travel</span>
+                <span class="life-tag">Music</span>
+                <span class="life-tag">Experiments</span>
+              </div>
             </div>
-            <p class="life-copy">A lighter side for ideas, passions, travel, music, design, experiments, and the parts of life that make the technical work more human.</p>
-            <div class="life-tags" aria-label="Placeholder life interests">
-              <span class="life-tag">Passions</span>
-              <span class="life-tag">Travel</span>
-              <span class="life-tag">Music</span>
-              <span class="life-tag">Experiments</span>
-            </div>
-          </div>
-        </article>
+          </article>
+        </div>
       </div>
-    </div>
 
-    <div class="card-controls" aria-label="Business card controls">
-      <button class="card-action" id="flip-card" type="button" aria-pressed="false" aria-label="Flip card to the life side">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15.5-6.2"></path><path d="M18.5 2.8v5.5H13"></path><path d="M21 12a9 9 0 0 1-15.5 6.2"></path><path d="M5.5 21.2v-5.5H11"></path></svg>
-        <span>Flip card</span>
-      </button>
-      <button class="card-action" id="open-fullscreen" type="button" aria-label="Open work side fullscreen">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5"></path><path d="M16 3h5v5"></path><path d="M21 16v5h-5"></path><path d="M3 16v5h5"></path><path d="M9 9 3 3"></path><path d="m15 9 6-6"></path><path d="m15 15 6 6"></path><path d="m9 15-6 6"></path></svg>
-        <span>Open fullscreen</span>
-      </button>
-      <p class="card-hint" id="card-hint">Flip the card to discover the light side.</p>
+      <div class="card-controls" aria-label="Business card controls">
+        <button class="card-action" id="flip-card" type="button" aria-pressed="false" aria-label="Flip card to the life side">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15.5-6.2"></path><path d="M18.5 2.8v5.5H13"></path><path d="M21 12a9 9 0 0 1-15.5 6.2"></path><path d="M5.5 21.2v-5.5H11"></path></svg>
+          <span>Flip</span>
+        </button>
+        <button class="card-action" id="open-fullscreen" type="button" aria-label="Open work side fullscreen">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5"></path><path d="M16 3h5v5"></path><path d="M21 16v5h-5"></path><path d="M3 16v5h5"></path><path d="M9 9 3 3"></path><path d="m15 9 6-6"></path><path d="m15 15 6 6"></path><path d="m9 15-6 6"></path></svg>
+          <span>Open</span>
+        </button>
+        <p class="card-hint" id="card-hint">Wheel or pinch to open.</p>
+      </div>
     </div>
   </section>
 
@@ -2465,12 +2591,17 @@
     const workExperience = document.getElementById('work-experience');
     const lifeExperience = document.getElementById('life-experience');
     const cardLanding = document.querySelector('.card-landing');
+    const cardStage = document.querySelector('.card-stage');
     const flipCardBtn = document.getElementById('flip-card');
     const openFullscreenBtn = document.getElementById('open-fullscreen');
     const backToCardBtn = document.getElementById('back-to-card');
     const cardHint = document.getElementById('card-hint');
     let activeFace = document.body.dataset.activeFace || 'work';
     let lastCardFocus = null;
+    let dragState = null;
+    let pinchStartDistance = 0;
+    let wheelZoomLocked = false;
+    let counterAnimationToken = 0;
 
     function setSurfaceState(el, isActive) {
       if (!el) return;
@@ -2490,7 +2621,7 @@
         openFullscreenBtn.setAttribute('aria-label', isLife ? 'Open life side fullscreen' : 'Open work side fullscreen');
       }
       if (cardHint) {
-        cardHint.textContent = isLife ? 'Open the light side, or flip back to work.' : 'Flip the card to discover the light side.';
+        cardHint.textContent = isLife ? 'Wheel or pinch to open life.' : 'Wheel or pinch to open work.';
       }
     }
 
@@ -2511,9 +2642,176 @@
       updateExperienceState();
     }
 
+    function setCardVars(vars) {
+      if (!cardStage) return;
+      Object.keys(vars).forEach(function(key) {
+        cardStage.style.setProperty(key, vars[key]);
+      });
+    }
+
+    function resetCardPointerEffect() {
+      if (cardStage) cardStage.classList.remove('is-pointer-active');
+      setCardVars({
+        '--tilt-x': '0deg',
+        '--tilt-y': '0deg',
+        '--glare-opacity': '0.16'
+      });
+    }
+
+    function updateCardPointerEffect(e) {
+      if (!cardStage || reducedMotion || document.body.classList.contains('fullscreen-mode')) return;
+      cardStage.classList.add('is-pointer-active');
+      const rect = cardStage.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width;
+      const y = (e.clientY - rect.top) / rect.height;
+      const nx = Math.max(-1, Math.min(1, x * 2 - 1));
+      const ny = Math.max(-1, Math.min(1, y * 2 - 1));
+      const curvedX = Math.sign(nx) * Math.sqrt(Math.abs(nx));
+      const curvedY = Math.sign(ny) * Math.sqrt(Math.abs(ny));
+      const edgeBoost = 1.08 + Math.max(Math.abs(nx), Math.abs(ny)) * 0.46;
+      const tiltX = (-curvedY * 10.4 * edgeBoost).toFixed(2) + 'deg';
+      const tiltY = (curvedX * 11.4 * edgeBoost).toFixed(2) + 'deg';
+      setCardVars({
+        '--tilt-x': tiltX,
+        '--tilt-y': tiltY,
+        '--glare-x': (x * 100).toFixed(1) + '%',
+        '--glare-y': (y * 100).toFixed(1) + '%',
+        '--glare-opacity': '0.46'
+      });
+    }
+
+    function getBoundedDrag(dx, dy) {
+      const limit = window.innerWidth < 720 ? 46 : 92;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      if (distance <= limit || distance === 0) return { x: dx, y: dy };
+      const resisted = limit + Math.min((distance - limit) * 0.16, 22);
+      const scale = resisted / distance;
+      return { x: dx * scale, y: dy * scale };
+    }
+
+    function isPointInsideCard(e) {
+      if (!cardStage) return false;
+      const rect = cardStage.getBoundingClientRect();
+      return e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom;
+    }
+
+    function startCardDrag(e) {
+      if (!cardStage || reducedMotion || document.body.classList.contains('fullscreen-mode')) return;
+      if (e.button !== undefined && e.button !== 0) return;
+      if (e.target.closest('button, a, [role="button"]')) return;
+      dragState = {
+        pointerId: e.pointerId,
+        startX: e.clientX,
+        startY: e.clientY
+      };
+      cardStage.classList.remove('is-returning');
+      cardStage.classList.add('is-dragging');
+      if (cardStage.setPointerCapture && e.pointerId !== undefined) {
+        cardStage.setPointerCapture(e.pointerId);
+      }
+      e.preventDefault();
+    }
+
+    function moveCardDrag(e) {
+      if (!dragState || !cardStage) return;
+      const drag = getBoundedDrag(e.clientX - dragState.startX, e.clientY - dragState.startY);
+      setCardVars({
+        '--card-x': drag.x.toFixed(1) + 'px',
+        '--card-y': drag.y.toFixed(1) + 'px'
+      });
+      e.preventDefault();
+    }
+
+    function releaseCardDrag(e) {
+      if (!dragState || !cardStage) return;
+      if (cardStage.releasePointerCapture && e && e.pointerId !== undefined) {
+        try {
+          cardStage.releasePointerCapture(e.pointerId);
+        } catch (error) {
+          // Pointer capture can already be released by the browser.
+        }
+      }
+      dragState = null;
+      cardStage.classList.remove('is-dragging');
+      cardStage.classList.add('is-returning');
+      setCardVars({ '--card-x': '0px', '--card-y': '0px' });
+      resetCardPointerEffect();
+      window.setTimeout(function() {
+        if (cardStage) cardStage.classList.remove('is-returning');
+      }, 1220);
+    }
+
+    function handleCardWheelZoom(e) {
+      if (!cardStage || reducedMotion || wheelZoomLocked || document.body.classList.contains('fullscreen-mode')) return;
+      const normalizedDelta = e.deltaMode === 1 ? e.deltaY * 16 : e.deltaY;
+      if (normalizedDelta > -34) return;
+      e.preventDefault();
+      wheelZoomLocked = true;
+      cardStage.classList.add('is-wheel-zooming');
+      openActiveFace();
+      window.setTimeout(function() {
+        wheelZoomLocked = false;
+        if (cardStage) cardStage.classList.remove('is-wheel-zooming');
+      }, 900);
+    }
+
+    function getTouchDistance(touches) {
+      const dx = touches[0].clientX - touches[1].clientX;
+      const dy = touches[0].clientY - touches[1].clientY;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    function handleCardPinchZoom(e) {
+      if (reducedMotion || document.body.classList.contains('fullscreen-mode')) return;
+      if (e.touches.length !== 2 || !pinchStartDistance) return;
+      const distance = getTouchDistance(e.touches);
+      if (distance - pinchStartDistance < 38) return;
+      e.preventDefault();
+      pinchStartDistance = 0;
+      openActiveFace();
+    }
+
+    function resetWorkAnimations() {
+      counterAnimationToken++;
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      if (heroContent) {
+        heroContent.style.transform = '';
+        heroContent.style.opacity = '';
+      }
+      if (heroAmbient) {
+        heroAmbient.style.transform = '';
+      }
+      if (typeof revealEls !== 'undefined' && typeof revealObserver !== 'undefined') {
+        revealEls.forEach(function(el) {
+          el.classList.remove('visible');
+          revealObserver.observe(el);
+        });
+      }
+      if (typeof counterEls !== 'undefined' && typeof counterObserver !== 'undefined') {
+        counterEls.forEach(function(el) {
+          el.classList.remove('locked');
+          if (el.getAttribute('data-counter') === 'money') {
+            const steps = (el.getAttribute('data-steps') || '').split('|').filter(Boolean);
+            el.textContent = steps[0] || '100K€';
+          } else {
+            el.textContent = '0' + (el.getAttribute('data-suffix') || '');
+          }
+          counterObserver.observe(el);
+        });
+      }
+      if (typeof updateProgress === 'function') updateProgress();
+      if (typeof updateNav === 'function') updateNav();
+      if (typeof updateParallax === 'function') updateParallax();
+    }
+
     function openActiveFace() {
       lastCardFocus = document.activeElement;
       document.body.classList.add('zooming');
+      if (activeFace === 'work') {
+        resetWorkAnimations();
+      } else {
+        window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      }
       document.body.classList.remove('card-mode');
       document.body.classList.add('fullscreen-mode');
       window.scrollTo({ top: 0, left: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
@@ -2528,6 +2826,9 @@
       document.body.classList.add('card-mode');
       document.body.classList.remove('fullscreen-mode', 'zooming');
       window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      if (activeFace === 'work') {
+        resetWorkAnimations();
+      }
       updateExperienceState();
       if (lastCardFocus && typeof lastCardFocus.focus === 'function') {
         lastCardFocus.focus();
@@ -2576,6 +2877,33 @@
       backToCardBtn.addEventListener('click', closeFullscreenFace);
     }
 
+    if (cardStage) {
+      cardStage.addEventListener('pointerdown', startCardDrag);
+      cardStage.addEventListener('pointermove', function(e) {
+        updateCardPointerEffect(e);
+        moveCardDrag(e);
+      });
+      cardStage.addEventListener('pointerup', releaseCardDrag);
+      cardStage.addEventListener('pointercancel', releaseCardDrag);
+      cardStage.addEventListener('pointerleave', function() {
+        if (!dragState) resetCardPointerEffect();
+      });
+      cardStage.addEventListener('wheel', handleCardWheelZoom, { passive: false });
+      cardStage.addEventListener('touchstart', function(e) {
+        pinchStartDistance = e.touches.length === 2 ? getTouchDistance(e.touches) : 0;
+      }, { passive: true });
+      cardStage.addEventListener('touchmove', handleCardPinchZoom, { passive: false });
+      cardStage.addEventListener('touchend', function() {
+        pinchStartDistance = 0;
+      }, { passive: true });
+      document.addEventListener('pointermove', function(e) {
+        if (dragState || reducedMotion || document.body.classList.contains('fullscreen-mode')) return;
+        if (cardStage.classList.contains('is-pointer-active') && !isPointInsideCard(e)) {
+          resetCardPointerEffect();
+        }
+      }, { passive: true });
+    }
+
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape' && document.body.classList.contains('fullscreen-mode')) {
         closeFullscreenFace();
@@ -2622,24 +2950,38 @@
       function drawUniverse(time) {
         ctx.clearRect(0, 0, width, height);
         const gradient = ctx.createLinearGradient(0, 0, width, height);
-        gradient.addColorStop(0, '#020408');
-        gradient.addColorStop(0.55, '#050711');
-        gradient.addColorStop(1, '#010206');
+        gradient.addColorStop(0, '#02080c');
+        gradient.addColorStop(0.45, '#041823');
+        gradient.addColorStop(1, '#01050b');
         ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, width, height);
+
+        const nebulaA = ctx.createRadialGradient(width * 0.2, height * 0.18, 0, width * 0.2, height * 0.18, Math.max(width, height) * 0.48);
+        nebulaA.addColorStop(0, 'rgba(34, 211, 238, 0.18)');
+        nebulaA.addColorStop(0.42, 'rgba(20, 184, 166, 0.065)');
+        nebulaA.addColorStop(1, 'rgba(2, 8, 12, 0)');
+        ctx.fillStyle = nebulaA;
+        ctx.fillRect(0, 0, width, height);
+
+        const nebulaB = ctx.createRadialGradient(width * 0.78, height * 0.72, 0, width * 0.78, height * 0.72, Math.max(width, height) * 0.52);
+        nebulaB.addColorStop(0, 'rgba(13, 148, 136, 0.15)');
+        nebulaB.addColorStop(0.5, 'rgba(8, 47, 73, 0.08)');
+        nebulaB.addColorStop(1, 'rgba(1, 5, 11, 0)');
+        ctx.fillStyle = nebulaB;
         ctx.fillRect(0, 0, width, height);
 
         stars.forEach(function(star) {
           const y = reducedMotion ? star.y : (star.y + time * 0.006 * star.drift) % height;
           const pulse = reducedMotion ? 1 : 0.75 + Math.sin(time * 0.0012 + star.x) * 0.25;
           ctx.beginPath();
-          ctx.fillStyle = 'rgba(192, 200, 216,' + (star.a * pulse) + ')';
+          ctx.fillStyle = 'rgba(214, 252, 255,' + (star.a * pulse) + ')';
           ctx.arc(star.x, y, star.r * star.z, 0, Math.PI * 2);
           ctx.fill();
         });
 
         ctx.save();
-        ctx.globalAlpha = 0.16;
-        ctx.strokeStyle = 'rgba(41, 151, 255, 0.18)';
+        ctx.globalAlpha = 0.14;
+        ctx.strokeStyle = 'rgba(45, 212, 191, 0.18)';
         ctx.lineWidth = 1;
         for (let i = 0; i < stars.length; i += 9) {
           const a = stars[i];
@@ -2707,7 +3049,7 @@
           customCursor.classList.add('visible');
           customCursor.classList.toggle(
             'hovering',
-            Boolean(e.target.closest('a, button, [role="button"], .card-action, .back-to-card, .tech-tag, .client-name, .life-tag, .life-panel, .pillar, .impact-card'))
+            Boolean(e.target.closest('a, button, [role="button"], .card-stage, .card-action, .back-to-card, .tech-tag, .client-name, .life-tag, .life-panel, .pillar, .impact-card'))
           );
         }
       });
@@ -2775,8 +3117,10 @@
 
       const duration = 2400;
       const startTime = performance.now();
+      const runToken = counterAnimationToken;
 
       function step(now) {
+        if (runToken !== counterAnimationToken) return;
         const elapsed = now - startTime;
         const progress = Math.min(elapsed / duration, 1);
         const index = Math.min(steps.length - 1, Math.floor(progress * steps.length));
@@ -2804,8 +3148,10 @@
       const suffix = el.getAttribute('data-suffix') || '';
       const duration = 1800;
       const startTime = performance.now();
+      const runToken = counterAnimationToken;
 
       function step(now) {
+        if (runToken !== counterAnimationToken) return;
         const elapsed = now - startTime;
         const progress = Math.min(elapsed / duration, 1);
         const value = Math.round(easeOutCubic(progress) * target);
@@ -2817,6 +3163,10 @@
           if (!reducedMotion) {
             let glitchCount = 0;
             const glitchInterval = setInterval(function() {
+              if (runToken !== counterAnimationToken) {
+                clearInterval(glitchInterval);
+                return;
+              }
               const offset = Math.round((Math.random() - 0.5) * 3);
               const glitchVal = Math.min(target, Math.max(0, target + offset));
               el.textContent = glitchVal + suffix;
