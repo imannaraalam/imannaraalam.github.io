@@ -733,6 +733,80 @@
       line-height: 1.6;
     }
 
+    .client-marquee {
+      margin-top: 3.5rem;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+      position: relative;
+      mask-image: linear-gradient(90deg, transparent 0%, #000 10%, #000 90%, transparent 100%);
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 10%, #000 90%, transparent 100%);
+    }
+
+    .client-marquee::before {
+      content: 'Selected clients';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      padding: 0.35rem 0.8rem;
+      background: var(--gray-900);
+      color: var(--blue);
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      z-index: 2;
+    }
+
+    .client-track {
+      display: flex;
+      width: max-content;
+      padding: 1.35rem 0;
+      animation: clientMarquee 34s linear infinite;
+    }
+
+    .client-marquee:hover .client-track {
+      animation-play-state: paused;
+    }
+
+    .client-group {
+      display: flex;
+      align-items: center;
+      gap: 2.75rem;
+      padding-right: 2.75rem;
+      white-space: nowrap;
+    }
+
+    .client-group:first-child {
+      padding-left: 9.5rem;
+    }
+
+    .client-group[aria-hidden="true"] {
+      padding-left: 9.5rem;
+    }
+
+    .client-name {
+      font-family: var(--font-display);
+      font-size: clamp(0.9rem, 1.45vw, 1.15rem);
+      font-weight: 600;
+      color: var(--silver);
+      opacity: 0.72;
+      letter-spacing: 0.02em;
+      transition: color 0.3s ease, opacity 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    .client-name:hover {
+      color: var(--white);
+      opacity: 1;
+      text-shadow: 0 0 18px rgba(41, 151, 255, 0.35);
+    }
+
+    @keyframes clientMarquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
     /* ====================================================
        TECH DNA SECTION
     ==================================================== */
@@ -1267,6 +1341,7 @@
       .pillar::after  { animation: none; }
       .pillar-icon    { animation: none; }
       .tech-tag       { animation: none; }
+      .client-track   { animation: none; transform: none; }
       .radar-ring     { animation: none; }
       .animated-divider::after { animation: none; }
       .data-stream    { animation: none; }
@@ -1448,6 +1523,53 @@
           <span class="impact-number" data-target="85" data-suffix="%">0%</span>
           <p class="impact-desc">Reduction in certification time through end-to-end automation, with 100+ devices tested in parallel 24/7</p>
         </article>
+      </div>
+
+      <div class="client-marquee reveal reveal-delay-5" aria-label="Selected enterprise clients">
+        <div class="client-track">
+          <div class="client-group">
+            <span class="client-name">Reply</span>
+            <span class="client-name">SKY</span>
+            <span class="client-name">Vodafone</span>
+            <span class="client-name">WINDTRE</span>
+            <span class="client-name">Fastweb</span>
+            <span class="client-name">CoopVoce</span>
+            <span class="client-name">TIM</span>
+            <span class="client-name">DAZN</span>
+            <span class="client-name">Toyota</span>
+            <span class="client-name">Generali</span>
+            <span class="client-name">UniCredit</span>
+            <span class="client-name">SNAM</span>
+            <span class="client-name">Terna</span>
+            <span class="client-name">Gridspertise</span>
+            <span class="client-name">Eni</span>
+            <span class="client-name">Telepass</span>
+            <span class="client-name">Enel</span>
+            <span class="client-name">EasyJet</span>
+            <span class="client-name">Luxottica</span>
+          </div>
+          <div class="client-group" aria-hidden="true">
+            <span class="client-name">Reply</span>
+            <span class="client-name">SKY</span>
+            <span class="client-name">Vodafone</span>
+            <span class="client-name">WINDTRE</span>
+            <span class="client-name">Fastweb</span>
+            <span class="client-name">CoopVoce</span>
+            <span class="client-name">TIM</span>
+            <span class="client-name">DAZN</span>
+            <span class="client-name">Toyota</span>
+            <span class="client-name">Generali</span>
+            <span class="client-name">UniCredit</span>
+            <span class="client-name">SNAM</span>
+            <span class="client-name">Terna</span>
+            <span class="client-name">Gridspertise</span>
+            <span class="client-name">Eni</span>
+            <span class="client-name">Telepass</span>
+            <span class="client-name">Enel</span>
+            <span class="client-name">EasyJet</span>
+            <span class="client-name">Luxottica</span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -1682,7 +1804,7 @@
           customCursor.classList.add('visible');
           customCursor.classList.toggle(
             'hovering',
-            Boolean(e.target.closest('a, button, [role="button"], .tech-tag, .pillar, .impact-card'))
+            Boolean(e.target.closest('a, button, [role="button"], .tech-tag, .client-name, .pillar, .impact-card'))
           );
         }
       });
