@@ -140,7 +140,7 @@
                   border-color 0.22s ease,
                   box-shadow 0.22s ease,
                   opacity 0.18s ease;
-      z-index: 10001;
+      z-index: 10005;
     }
 
     #custom-cursor.visible {
@@ -273,7 +273,7 @@
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
-      transform: scale(1.08);
+      transform: scale(1.16);
     }
 
     .card-stage {
@@ -287,7 +287,7 @@
       position: relative;
       width: min(520px, 90vw, 64vh);
       aspect-ratio: 0.72;
-      max-height: min(760px, calc(100vh - 3.25rem));
+      max-height: min(760px, calc(100vh - 7.5rem));
       perspective: 1600px;
       transform-style: preserve-3d;
       transform: translate3d(var(--card-x), var(--card-y), 0);
@@ -342,12 +342,18 @@
     }
 
     body.zooming .card-stage {
-      transform: translate3d(var(--card-x), var(--card-y), 0) scale(1.18);
+      transform: translate3d(var(--card-x), var(--card-y), 0) scale(1.34);
       filter: blur(0.5px);
     }
 
     body.zooming .card-float-shell {
       filter: drop-shadow(0 20px 90px rgba(34, 211, 238, 0.28));
+    }
+
+    body.zooming .card-footer {
+      opacity: 0;
+      transform: translate3d(0, 100%, 0);
+      transition-duration: 0.38s;
     }
 
     .card-face {
@@ -463,23 +469,12 @@
       right: 1rem;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
       color: var(--silver);
       font-family: var(--font-display);
       font-size: 0.58rem;
       letter-spacing: 0.02em;
       z-index: 2;
-    }
-
-    .mini-menu {
-      width: 18px;
-      display: grid;
-      gap: 3px;
-    }
-
-    .mini-menu span {
-      height: 1px;
-      background: currentColor;
     }
 
     .mini-badge {
@@ -494,6 +489,17 @@
       line-height: 1;
       background: rgba(255, 255, 255, 0.04);
       z-index: 2;
+    }
+
+    .mini-status-dot {
+      display: inline-block;
+      width: 0.38rem;
+      height: 0.38rem;
+      margin-right: 0.28rem;
+      border-radius: 50%;
+      background: #00d16f;
+      box-shadow: 0 0 10px rgba(0, 209, 111, 0.72);
+      vertical-align: -0.02em;
     }
 
     .mini-title {
@@ -659,7 +665,7 @@
 
     #flip-card {
       left: -1rem;
-      top: 50%;
+      top: calc(50% - 2.45rem);
       bottom: auto;
       min-height: 2.35rem;
       padding: 0 0.9rem;
@@ -667,15 +673,11 @@
     }
 
     #open-fullscreen {
-      width: 1px;
-      height: 1px;
-      min-height: 1px;
-      padding: 0;
-      pointer-events: none;
-      overflow: hidden;
-      clip-path: inset(50%);
-      white-space: nowrap;
-      opacity: 0;
+      left: -1rem;
+      top: calc(50% + 2.45rem);
+      bottom: auto;
+      min-height: 2.05rem;
+      transform: translate(-100%, -50%);
     }
 
     .card-action:hover,
@@ -686,21 +688,9 @@
       box-shadow: 0 12px 34px rgba(41, 151, 255, 0.14);
     }
 
-    #flip-card:hover {
+    #flip-card:hover,
+    #open-fullscreen:hover {
       transform: translate(calc(-100% - 2px), -50%);
-    }
-
-    #open-fullscreen:focus-visible {
-      right: 0.9rem;
-      bottom: 0.9rem;
-      width: auto;
-      height: auto;
-      min-height: 2.05rem;
-      padding: 0 0.65rem;
-      pointer-events: auto;
-      clip-path: none;
-      opacity: 1;
-      white-space: normal;
     }
 
     .back-to-card:hover {
@@ -748,6 +738,140 @@
       background: rgba(243, 234, 215, 0.72);
       border-color: rgba(93, 69, 43, 0.18);
       box-shadow: 0 10px 30px rgba(46, 32, 18, 0.08);
+    }
+
+    .card-footer {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 60;
+      width: auto;
+      min-height: 2.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.78rem clamp(1rem, 4vw, 2.5rem) 0.6rem;
+      border: 0;
+      border-right: 0;
+      border-bottom: 0;
+      border-left: 0;
+      border-radius: 0;
+      color: var(--gray-500);
+      background: transparent;
+      box-shadow: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      pointer-events: auto;
+      transform: translate3d(0, 0, 0);
+      transition: transform 0.42s var(--ease-premium), opacity 0.24s ease;
+      isolation: isolate;
+      overflow: visible;
+    }
+
+    .card-footer::before,
+    .card-footer::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      pointer-events: none;
+      transform: translateX(-50%);
+    }
+
+    .card-footer::before {
+      bottom: 0;
+      z-index: -1;
+      width: min(1120px, 100vw);
+      height: 3.35rem;
+      background:
+        radial-gradient(72% 120% at 50% 100%,
+          rgba(0, 0, 0, 0.92) 0%,
+          rgba(0, 0, 0, 0.82) 42%,
+          rgba(0, 0, 0, 0.5) 68%,
+          rgba(0, 0, 0, 0) 100%);
+    }
+
+    .card-footer::after {
+      top: 0;
+      width: min(780px, 86vw);
+      height: 1px;
+      background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.055) 18%,
+        rgba(255, 255, 255, 0.11) 50%,
+        rgba(255, 255, 255, 0.055) 82%,
+        transparent);
+    }
+
+    .card-stage > .card-footer {
+      display: none;
+    }
+
+    .card-footer-row {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      color: var(--gray-500);
+      font-size: 0.8125rem;
+      font-weight: 300;
+      letter-spacing: 0.02em;
+      line-height: 1;
+    }
+
+    .card-footer-name {
+      color: currentColor;
+      font-family: var(--font-body);
+      font-size: inherit;
+      font-weight: inherit;
+      letter-spacing: inherit;
+      line-height: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-footer-dot {
+      color: var(--gray-500);
+      opacity: 0.72;
+      font-size: 0.8125rem;
+      line-height: 1;
+    }
+
+    .card-footer-connect {
+      min-height: auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      border-radius: 4px;
+      padding: 0;
+      color: var(--gray-500);
+      background: transparent;
+      box-shadow: none;
+      font-family: var(--font-body);
+      font-size: inherit;
+      font-weight: 700;
+      letter-spacing: inherit;
+      line-height: 1;
+      transition: color 0.22s ease, text-shadow 0.22s ease, opacity 0.22s ease;
+    }
+
+    .card-footer-connect:hover {
+      color: var(--blue);
+      text-shadow: 0 0 18px rgba(41, 151, 255, 0.24);
+    }
+
+    .card-footer-connect:disabled {
+      cursor: wait;
+      opacity: 0.5;
+    }
+
+    .card-footer-connect:focus-visible {
+      outline: 2px solid rgba(50, 210, 254, 0.88);
+      outline-offset: 3px;
     }
 
     .hero-scroll-prompt {
@@ -987,6 +1111,16 @@
 
     .nav-links a:hover::after {
       width: 100%;
+    }
+
+    .nav-links a.nav-featured {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    .nav-links a.nav-featured::after {
+      width: 100%;
+      box-shadow: 0 0 18px rgba(41, 151, 255, 0.45);
     }
 
     .nav-hamburger {
@@ -1598,6 +1732,63 @@
     }
 
     .tech-tags {
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.15fr) minmax(0, 0.95fr);
+      gap: 1rem;
+      align-items: stretch;
+    }
+
+    .tech-group {
+      position: relative;
+      min-width: 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.1rem;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.045), transparent 46%),
+        rgba(255, 255, 255, 0.018);
+      overflow: hidden;
+    }
+
+    .tech-group::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 20% 0%, rgba(41, 151, 255, 0.12), transparent 34%);
+      opacity: 0.72;
+    }
+
+    .tech-group-ai {
+      border-color: rgba(41, 151, 255, 0.34);
+      background:
+        radial-gradient(circle at 50% 0%, rgba(50, 210, 254, 0.13), transparent 42%),
+        linear-gradient(135deg, rgba(41, 151, 255, 0.08), transparent 48%),
+        rgba(255, 255, 255, 0.025);
+      box-shadow: 0 28px 70px rgba(41, 151, 255, 0.08);
+    }
+
+    .tech-group-title {
+      position: relative;
+      margin: 0 0 1rem;
+      color: var(--white);
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .tech-group-title::after {
+      content: '';
+      display: block;
+      width: 2rem;
+      height: 1px;
+      margin-top: 0.55rem;
+      background: linear-gradient(90deg, var(--blue), transparent);
+    }
+
+    .tech-group-tags {
+      position: relative;
       display: flex;
       flex-wrap: wrap;
       gap: 0.75rem;
@@ -1835,7 +2026,7 @@
 
       .card-stage {
         width: min(430px, 92vw, 62vh);
-        max-height: calc(100vh - 6.5rem);
+        max-height: calc(100vh - 9.25rem);
       }
 
       .card-float-shell {
@@ -1869,7 +2060,7 @@
       }
 
       #flip-card {
-        left: 50%;
+        left: 30%;
         top: auto;
         bottom: -3.1rem;
         transform: translateX(-50%);
@@ -1877,6 +2068,33 @@
 
       #flip-card:hover {
         transform: translate(-50%, -2px);
+      }
+
+      #open-fullscreen {
+        right: auto;
+        left: 70%;
+        top: auto;
+        bottom: -3.1rem;
+        min-height: 2.35rem;
+        transform: translateX(-50%);
+      }
+
+      #open-fullscreen:hover {
+        transform: translate(-50%, -2px);
+      }
+
+      .card-footer {
+        padding: 0.52rem 1rem;
+      }
+
+      .card-footer-name {
+        font-size: inherit;
+      }
+
+      .card-footer-connect {
+        min-height: auto;
+        padding: 0;
+        font-size: inherit;
       }
 
       .back-to-card {
@@ -2032,9 +2250,21 @@
       }
 
       .tech-tags {
+        display: flex;
+        flex-wrap: wrap;
         gap: 0.6rem;
         align-content: flex-start;
-        min-height: 9.5rem;
+        min-height: 18rem;
+      }
+
+      .tech-group,
+      .tech-group-tags {
+        display: contents;
+      }
+
+      .tech-group::before,
+      .tech-group-title {
+        display: none;
       }
 
       .tech-tag {
@@ -2063,11 +2293,11 @@
     @media (max-width: 480px) {
       .card-stage {
         width: min(340px, 90vw, 56vh);
-        max-height: calc(100vh - 6.5rem);
+        max-height: calc(100vh - 9.75rem);
       }
 
       #flip-card {
-        left: 50%;
+        left: 30%;
         top: auto;
         bottom: -3.1rem;
         min-height: 2.45rem;
@@ -2076,6 +2306,29 @@
 
       #flip-card:hover {
         transform: translate(-50%, -2px);
+      }
+
+      #open-fullscreen {
+        left: 70%;
+        top: auto;
+        bottom: -3.1rem;
+        min-height: 2.45rem;
+        transform: translateX(-50%);
+      }
+
+      #open-fullscreen:hover {
+        transform: translate(-50%, -2px);
+      }
+
+      .card-footer {
+        justify-content: center;
+        padding: 0.5rem 0.75rem;
+      }
+
+      .card-footer-row {
+        justify-content: center;
+        gap: 0.4rem;
+        font-size: 0.72rem;
       }
 
       .card-hint {
@@ -2129,6 +2382,10 @@
 
       .impact-card:last-child {
         border-bottom: none;
+      }
+
+      .tech-tags {
+        min-height: 19.5rem;
       }
 
       .connect-ctas {
@@ -2508,9 +2765,8 @@
             <div class="mini-work-preview">
               <div class="mini-nav" aria-hidden="true">
                 <span>mannaraalam.dev</span>
-                <span class="mini-menu"><span></span><span></span><span></span></span>
               </div>
-              <div class="mini-badge">Open to strategic opportunities</div>
+              <div class="mini-badge"><span class="mini-status-dot" aria-hidden="true"></span>Open to strategic opportunities</div>
               <h2 class="mini-title">Engineering<br /><span>Quality at Scale</span></h2>
               <p class="mini-copy">Senior Test Automation Architect &amp; Software Engineer. I design intelligent systems that make software reliable, fast, and resilient at enterprise scale.</p>
               <div class="mini-ctas" aria-hidden="true">
@@ -2548,6 +2804,27 @@
         </button>
         <p class="card-hint" id="card-hint">Double click or wheel to open</p>
       </div>
+
+      <div class="card-footer" aria-label="Business card contact">
+        <div class="card-footer-copy">
+          <span class="card-footer-name">Ishar Pasquale Mannara Alam</span>
+          <span class="card-footer-line">Driven by impossible problems and tiny cars</span>
+        </div>
+        <button class="card-footer-connect" id="card-connect-legacy" type="button" aria-hidden="true" tabindex="-1">
+          <span aria-hidden="true">🏎️</span>
+          <span>Connect</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="card-footer" aria-label="Business card contact">
+      <div class="card-footer-row">
+        <span class="card-footer-name">© 2026 Ishar Pasquale Mannara Alam</span>
+        <span class="card-footer-dot" aria-hidden="true">·</span>
+        <button class="card-footer-connect" id="card-connect" type="button" aria-label="Open work side and go to contact section">
+          <span>Connect</span>
+        </button>
+      </div>
     </div>
   </section>
 
@@ -2577,7 +2854,7 @@
       <li><a href="#impact">Impact</a></li>
       <li><a href="#what-i-build">Expertise</a></li>
       <li><a href="#tech-dna">Stack</a></li>
-      <li><a href="#connect">Connect</a></li>
+      <li><a class="nav-featured" href="#connect">Connect</a></li>
     </ul>
   </nav>
 
@@ -2651,7 +2928,7 @@
         </article>
       </div>
 
-      <div class="client-marquee reveal reveal-delay-5" aria-label="Selected enterprise clients">
+      <div class="client-marquee reveal reveal-delay-3" aria-label="Selected enterprise clients">
         <p class="client-marquee-label">Selected clients</p>
         <div class="client-track">
           <div class="client-group">
@@ -2771,45 +3048,62 @@
         <button class="tech-tab" type="button" role="tab" aria-selected="false" data-tech-filter="systems">Systems</button>
       </div>
 
-      <div class="tech-tags reveal reveal-delay-2" role="list" aria-label="Technology stack">
-        <span class="tech-tag" role="listitem" data-tech-category="automation"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="Python logo" loading="lazy" />Python</span>
-        <span class="tech-tag" role="listitem" data-tech-category="automation"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" alt="Java logo" loading="lazy" />Java</span>
-        <span class="tech-tag" role="listitem" data-tech-category="automation"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/playwright/playwright-original.svg" alt="Playwright logo" loading="lazy" />Playwright</span>
-        <span class="tech-tag" role="listitem" data-tech-category="automation"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/selenium/selenium-original.svg" alt="Selenium logo" loading="lazy" />Selenium</span>
-        <span class="tech-tag" role="listitem" data-tech-category="automation"><img src="https://cdn.simpleicons.org/appium/ffffff" alt="Appium logo" loading="lazy" />Appium</span>
-        <span class="tech-tag" role="listitem" data-tech-category="automation"><img class="tech-logo-mono" src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/webdriverio.svg" alt="WebDriverIO logo" loading="lazy" />WebDriverIO</span>
-        <span class="tech-tag" role="listitem" data-tech-category="automation"><svg class="tech-icon" aria-hidden="true"><use href="#icon-api"></use></svg>REST Assured</span>
-        <span class="tech-tag" role="listitem" data-tech-category="automation"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cucumber/cucumber-plain.svg" alt="Cucumber logo" loading="lazy" />Cucumber</span>
-        <span class="tech-tag" role="listitem" data-tech-category="automation"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/opencv/opencv-original.svg" alt="OpenCV logo" loading="lazy" />OpenCV</span>
-        <span class="tech-tag" role="listitem" data-tech-category="automation"><svg class="tech-icon" aria-hidden="true"><use href="#icon-eye"></use></svg>Tesseract OCR</span>
-        <span class="tech-tag" role="listitem" data-tech-category="ai"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pytorch/pytorch-original.svg" alt="PyTorch logo" loading="lazy" />PyTorch</span>
-        <span class="tech-tag" role="listitem" data-tech-category="ai"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tensorflow/tensorflow-original.svg" alt="TensorFlow logo" loading="lazy" />TensorFlow</span>
-        <span class="tech-tag" role="listitem" data-tech-category="ai"><img class="tech-logo-mono" src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/openai.svg" alt="OpenAI logo" loading="lazy" />OpenAI APIs</span>
-        <span class="tech-tag" role="listitem" data-tech-category="ai"><img class="tech-logo-mono" src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/huggingface.svg" alt="Hugging Face logo" loading="lazy" />Hugging Face</span>
-        <span class="tech-tag" role="listitem" data-tech-category="ai"><img class="tech-logo-mono" src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/ollama.svg" alt="Ollama logo" loading="lazy" />Ollama</span>
-        <span class="tech-tag" role="listitem" data-tech-category="ai"><svg class="tech-icon" aria-hidden="true"><use href="#icon-brain"></use></svg>LLMs</span>
-        <span class="tech-tag" role="listitem" data-tech-category="ai"><svg class="tech-icon" aria-hidden="true"><use href="#icon-chip"></use></svg>SLMs</span>
-        <span class="tech-tag" role="listitem" data-tech-category="ai"><svg class="tech-icon" aria-hidden="true"><use href="#icon-search-data"></use></svg>RAG</span>
-        <span class="tech-tag" role="listitem" data-tech-category="ai"><svg class="tech-icon" aria-hidden="true"><use href="#icon-agent"></use></svg>AI Agents</span>
-        <span class="tech-tag" role="listitem" data-tech-category="ai"><svg class="tech-icon" aria-hidden="true"><use href="#icon-chain"></use></svg>LangChain</span>
-        <span class="tech-tag" role="listitem" data-tech-category="systems"><svg class="tech-icon" aria-hidden="true"><use href="#icon-graph"></use></svg>LangGraph</span>
-        <span class="tech-tag" role="listitem" data-tech-category="systems"><svg class="tech-icon" aria-hidden="true"><use href="#icon-vector-db"></use></svg>Vector DBs</span>
-        <span class="tech-tag" role="listitem" data-tech-category="cloud"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/fastapi/fastapi-original.svg" alt="FastAPI logo" loading="lazy" />FastAPI</span>
-        <span class="tech-tag" role="listitem" data-tech-category="cloud"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" alt="PostgreSQL logo" loading="lazy" />PostgreSQL</span>
-        <span class="tech-tag" role="listitem" data-tech-category="cloud"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg" alt="AWS logo" loading="lazy" />AWS</span>
-        <span class="tech-tag" role="listitem" data-tech-category="cloud"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/azure/azure-original.svg" alt="Azure logo" loading="lazy" />Azure</span>
-        <span class="tech-tag" role="listitem" data-tech-category="cloud"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/googlecloud/googlecloud-original.svg" alt="Google Cloud logo" loading="lazy" />GCP</span>
-        <span class="tech-tag" role="listitem" data-tech-category="cloud"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/kubernetes/kubernetes-original.svg" alt="Kubernetes logo" loading="lazy" />Kubernetes</span>
-        <span class="tech-tag" role="listitem" data-tech-category="cloud"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" alt="Docker logo" loading="lazy" />Docker</span>
-        <span class="tech-tag" role="listitem" data-tech-category="cloud"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/terraform/terraform-original.svg" alt="Terraform logo" loading="lazy" />Terraform</span>
-        <span class="tech-tag" role="listitem" data-tech-category="cloud"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/githubactions/githubactions-original.svg" alt="GitHub Actions logo" loading="lazy" />GitHub Actions</span>
-        <span class="tech-tag" role="listitem" data-tech-category="systems"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jenkins/jenkins-original.svg" alt="Jenkins logo" loading="lazy" />Jenkins</span>
-        <span class="tech-tag" role="listitem" data-tech-category="systems"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/apachekafka/apachekafka-original.svg" alt="Kafka logo" loading="lazy" />Kafka</span>
-        <span class="tech-tag" role="listitem" data-tech-category="systems"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/grafana/grafana-original.svg" alt="Grafana logo" loading="lazy" />Grafana</span>
-        <span class="tech-tag" role="listitem" data-tech-category="systems"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/prometheus/prometheus-original.svg" alt="Prometheus logo" loading="lazy" />Prometheus</span>
-        <span class="tech-tag" role="listitem" data-tech-category="systems"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/arduino/arduino-original.svg" alt="Arduino logo" loading="lazy" />Arduino</span>
-        <span class="tech-tag" role="listitem" data-tech-category="systems"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/raspberrypi/raspberrypi-original.svg" alt="Raspberry Pi logo" loading="lazy" />Raspberry Pi</span>
-        <span class="tech-tag" role="listitem" data-tech-category="systems"><svg class="tech-icon" aria-hidden="true"><use href="#icon-chip"></use></svg>ESP32</span>
+      <div class="tech-tags reveal reveal-delay-2" aria-label="Technology stack">
+        <article class="tech-group tech-group-automation" aria-label="Automation stack">
+          <h3 class="tech-group-title">Automation</h3>
+          <div class="tech-group-tags" role="list">
+            <span class="tech-tag" role="listitem" data-tech-category="automation"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="Python logo" loading="lazy" />Python</span>
+            <span class="tech-tag" role="listitem" data-tech-category="automation"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" alt="Java logo" loading="lazy" />Java</span>
+            <span class="tech-tag" role="listitem" data-tech-category="automation"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/playwright/playwright-original.svg" alt="Playwright logo" loading="lazy" />Playwright</span>
+            <span class="tech-tag" role="listitem" data-tech-category="automation"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/selenium/selenium-original.svg" alt="Selenium logo" loading="lazy" />Selenium</span>
+            <span class="tech-tag" role="listitem" data-tech-category="automation"><img src="https://cdn.simpleicons.org/appium/ffffff" alt="Appium logo" loading="lazy" />Appium</span>
+            <span class="tech-tag" role="listitem" data-tech-category="automation"><img class="tech-logo-mono" src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/webdriverio.svg" alt="WebDriverIO logo" loading="lazy" />WebDriverIO</span>
+            <span class="tech-tag" role="listitem" data-tech-category="automation"><svg class="tech-icon" aria-hidden="true"><use href="#icon-api"></use></svg>REST Assured</span>
+            <span class="tech-tag" role="listitem" data-tech-category="automation"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cucumber/cucumber-plain.svg" alt="Cucumber logo" loading="lazy" />Cucumber</span>
+            <span class="tech-tag" role="listitem" data-tech-category="automation"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/opencv/opencv-original.svg" alt="OpenCV logo" loading="lazy" />OpenCV</span>
+            <span class="tech-tag" role="listitem" data-tech-category="automation"><svg class="tech-icon" aria-hidden="true"><use href="#icon-eye"></use></svg>Tesseract OCR</span>
+          </div>
+        </article>
+
+        <article class="tech-group tech-group-ai" aria-label="AI stack">
+          <h3 class="tech-group-title">AI</h3>
+          <div class="tech-group-tags" role="list">
+            <span class="tech-tag" role="listitem" data-tech-category="ai"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pytorch/pytorch-original.svg" alt="PyTorch logo" loading="lazy" />PyTorch</span>
+            <span class="tech-tag" role="listitem" data-tech-category="ai"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tensorflow/tensorflow-original.svg" alt="TensorFlow logo" loading="lazy" />TensorFlow</span>
+            <span class="tech-tag" role="listitem" data-tech-category="ai"><img class="tech-logo-mono" src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/openai.svg" alt="OpenAI logo" loading="lazy" />OpenAI APIs</span>
+            <span class="tech-tag" role="listitem" data-tech-category="ai"><img class="tech-logo-mono" src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/huggingface.svg" alt="Hugging Face logo" loading="lazy" />Hugging Face</span>
+            <span class="tech-tag" role="listitem" data-tech-category="ai"><img class="tech-logo-mono" src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/ollama.svg" alt="Ollama logo" loading="lazy" />Ollama</span>
+            <span class="tech-tag" role="listitem" data-tech-category="ai"><svg class="tech-icon" aria-hidden="true"><use href="#icon-brain"></use></svg>LLMs</span>
+            <span class="tech-tag" role="listitem" data-tech-category="ai"><svg class="tech-icon" aria-hidden="true"><use href="#icon-chip"></use></svg>SLMs</span>
+            <span class="tech-tag" role="listitem" data-tech-category="ai"><svg class="tech-icon" aria-hidden="true"><use href="#icon-search-data"></use></svg>RAG</span>
+            <span class="tech-tag" role="listitem" data-tech-category="ai"><svg class="tech-icon" aria-hidden="true"><use href="#icon-agent"></use></svg>AI Agents</span>
+            <span class="tech-tag" role="listitem" data-tech-category="ai"><svg class="tech-icon" aria-hidden="true"><use href="#icon-chain"></use></svg>LangChain</span>
+          </div>
+        </article>
+
+        <article class="tech-group tech-group-cloud-systems" aria-label="Cloud and systems stack">
+          <h3 class="tech-group-title">Cloud &amp; Systems</h3>
+          <div class="tech-group-tags" role="list">
+            <span class="tech-tag" role="listitem" data-tech-category="cloud"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/fastapi/fastapi-original.svg" alt="FastAPI logo" loading="lazy" />FastAPI</span>
+            <span class="tech-tag" role="listitem" data-tech-category="cloud"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" alt="PostgreSQL logo" loading="lazy" />PostgreSQL</span>
+            <span class="tech-tag" role="listitem" data-tech-category="cloud"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg" alt="AWS logo" loading="lazy" />AWS</span>
+            <span class="tech-tag" role="listitem" data-tech-category="cloud"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/azure/azure-original.svg" alt="Azure logo" loading="lazy" />Azure</span>
+            <span class="tech-tag" role="listitem" data-tech-category="cloud"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/googlecloud/googlecloud-original.svg" alt="Google Cloud logo" loading="lazy" />GCP</span>
+            <span class="tech-tag" role="listitem" data-tech-category="cloud"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/kubernetes/kubernetes-original.svg" alt="Kubernetes logo" loading="lazy" />Kubernetes</span>
+            <span class="tech-tag" role="listitem" data-tech-category="cloud"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" alt="Docker logo" loading="lazy" />Docker</span>
+            <span class="tech-tag" role="listitem" data-tech-category="cloud"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/terraform/terraform-original.svg" alt="Terraform logo" loading="lazy" />Terraform</span>
+            <span class="tech-tag" role="listitem" data-tech-category="cloud"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/githubactions/githubactions-original.svg" alt="GitHub Actions logo" loading="lazy" />GitHub Actions</span>
+            <span class="tech-tag" role="listitem" data-tech-category="systems"><svg class="tech-icon" aria-hidden="true"><use href="#icon-graph"></use></svg>LangGraph</span>
+            <span class="tech-tag" role="listitem" data-tech-category="systems"><svg class="tech-icon" aria-hidden="true"><use href="#icon-vector-db"></use></svg>Vector DBs</span>
+            <span class="tech-tag" role="listitem" data-tech-category="systems"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jenkins/jenkins-original.svg" alt="Jenkins logo" loading="lazy" />Jenkins</span>
+            <span class="tech-tag" role="listitem" data-tech-category="systems"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/apachekafka/apachekafka-original.svg" alt="Kafka logo" loading="lazy" />Kafka</span>
+            <span class="tech-tag" role="listitem" data-tech-category="systems"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/grafana/grafana-original.svg" alt="Grafana logo" loading="lazy" />Grafana</span>
+            <span class="tech-tag" role="listitem" data-tech-category="systems"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/prometheus/prometheus-original.svg" alt="Prometheus logo" loading="lazy" />Prometheus</span>
+            <span class="tech-tag" role="listitem" data-tech-category="systems"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/arduino/arduino-original.svg" alt="Arduino logo" loading="lazy" />Arduino</span>
+            <span class="tech-tag" role="listitem" data-tech-category="systems"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/raspberrypi/raspberrypi-original.svg" alt="Raspberry Pi logo" loading="lazy" />Raspberry Pi</span>
+            <span class="tech-tag" role="listitem" data-tech-category="systems"><svg class="tech-icon" aria-hidden="true"><use href="#icon-chip"></use></svg>ESP32</span>
+          </div>
+        </article>
       </div>
     </div>
   </section>
@@ -2973,10 +3267,13 @@
     const cardStage = document.querySelector('.card-stage');
     const flipCardBtn = document.getElementById('flip-card');
     const openFullscreenBtn = document.getElementById('open-fullscreen');
+    const cardConnectBtn = document.getElementById('card-connect');
     const backToCardBtn = document.getElementById('back-to-card');
     const cardHint = document.getElementById('card-hint');
     let activeFace = document.body.dataset.activeFace || 'work';
     let lastCardFocus = null;
+    let pendingFullscreenScrollTarget = null;
+    let cardConnectLocked = false;
     let dragState = null;
     let pointerDownPoint = null;
     let lastTapPoint = null;
@@ -3050,9 +3347,9 @@
       const ny = Math.max(-1, Math.min(1, y * 2 - 1));
       const curvedX = Math.sign(nx) * Math.sqrt(Math.abs(nx));
       const curvedY = Math.sign(ny) * Math.sqrt(Math.abs(ny));
-      const edgeBoost = 1.08 + Math.max(Math.abs(nx), Math.abs(ny)) * 0.46;
-      const tiltX = (-curvedY * 10.4 * edgeBoost).toFixed(2) + 'deg';
-      const tiltY = (curvedX * 11.4 * edgeBoost).toFixed(2) + 'deg';
+      const edgeBoost = 0.92 + Math.max(Math.abs(nx), Math.abs(ny)) * 0.28;
+      const tiltX = (-curvedY * 6.8 * edgeBoost).toFixed(2) + 'deg';
+      const tiltY = (curvedX * 7.4 * edgeBoost).toFixed(2) + 'deg';
       setCardVars({
         '--tilt-x': tiltX,
         '--tilt-y': tiltY,
@@ -3211,8 +3508,21 @@
       if (typeof updateParallax === 'function') updateParallax();
     }
 
-    function openActiveFace() {
+    function scrollToPendingFullscreenTarget() {
+      if (!pendingFullscreenScrollTarget) return;
+      const target = document.getElementById(pendingFullscreenScrollTarget);
+      pendingFullscreenScrollTarget = null;
+      if (!target) return;
+      const targetTop = target.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({
+        top: Math.max(0, targetTop),
+        behavior: reducedMotion ? 'auto' : 'smooth',
+      });
+    }
+
+    function openActiveFace(scrollTargetId) {
       lastCardFocus = document.activeElement;
+      pendingFullscreenScrollTarget = scrollTargetId || null;
       document.body.classList.add('zooming');
       if (activeFace === 'work') {
         resetWorkAnimations();
@@ -3227,8 +3537,28 @@
       setTimeout(function() {
         document.body.classList.remove('zooming');
         syncBackToCardPosition();
-        if (backToCardBtn) backToCardBtn.focus();
+        if (backToCardBtn) backToCardBtn.focus({ preventScroll: true });
+        scrollToPendingFullscreenTarget();
       }, reducedMotion ? 0 : 420);
+    }
+
+    function openWorkConnectFromCard() {
+      if (!cardConnectBtn || cardConnectLocked || document.body.classList.contains('fullscreen-mode')) return;
+      cardConnectLocked = true;
+      cardConnectBtn.disabled = true;
+
+      const wasLife = activeFace === 'life';
+      if (wasLife) {
+        setActiveFace('work');
+      }
+
+      window.setTimeout(function() {
+        openActiveFace('connect');
+        window.setTimeout(function() {
+          cardConnectLocked = false;
+          if (cardConnectBtn) cardConnectBtn.disabled = false;
+        }, reducedMotion ? 0 : 520);
+      }, wasLife && !reducedMotion ? 720 : 0);
     }
 
     function closeFullscreenFace() {
@@ -3279,7 +3609,13 @@
     }
 
     if (openFullscreenBtn) {
-      openFullscreenBtn.addEventListener('click', openActiveFace);
+      openFullscreenBtn.addEventListener('click', function() {
+        openActiveFace();
+      });
+    }
+
+    if (cardConnectBtn) {
+      cardConnectBtn.addEventListener('click', openWorkConnectFromCard);
     }
 
     if (backToCardBtn) {
@@ -3862,9 +4198,13 @@
     let techSectionInView = false;
     let techCategoryTouched = false;
 
+    function isTechMobileMode() {
+      return techMobileQuery.matches || window.innerWidth <= 968;
+    }
+
     function setTechCategory(category) {
       activeTechCategory = category || 'automation';
-      const mobileMode = techMobileQuery.matches;
+      const mobileMode = isTechMobileMode();
 
       techTabs.forEach(function(tab) {
         const selected = tab.dataset.techFilter === activeTechCategory;
@@ -3913,7 +4253,7 @@
     }
 
     function updateTechAutoplay() {
-      if (reducedMotion || techCategoryTouched || !techMobileQuery.matches || !techSectionInView) {
+      if (reducedMotion || techCategoryTouched || !isTechMobileMode() || !techSectionInView) {
         stopTechAutoplay();
         return;
       }
@@ -3948,7 +4288,21 @@
       });
     }
 
+    window.addEventListener('resize', function() {
+      setTechCategory(activeTechCategory);
+      updateTechAutoplay();
+    }, { passive: true });
+
+    window.addEventListener('load', function() {
+      setTechCategory(activeTechCategory);
+      updateTechAutoplay();
+    });
+
     setTechCategory(activeTechCategory);
+    window.requestAnimationFrame(function() {
+      setTechCategory(activeTechCategory);
+      updateTechAutoplay();
+    });
     updateTechAutoplay();
   </script>
 </body>
